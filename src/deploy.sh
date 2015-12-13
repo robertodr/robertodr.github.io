@@ -70,7 +70,7 @@ deploy() {
     ./site build > /dev/null
   fi
 
-  cp -r "$SITE"/* $DEPLOY
+  cp -r $SITE/* $DEPLOY
   info "copied $SITE into $DEPLOY"
 
   cd $DEPLOY
