@@ -23,12 +23,17 @@ Setup.hs        | build type
 totaltrash.cabal    | dependency management
 readme.markdown     | repository information
 
-I use a [Cabal sandbox](http://coldwa.st/e/blog/2013-08-20-Cabal-sandbox.html) to build the website:
+I use a [Cabal sandbox](http://coldwa.st/e/blog/2013-08-20-Cabal-sandbox.html)
+to set up the build and deploy environment:
 ```
 cabal sandbox init
 cabal install -j cabal-install
 cabal install -j --only-dep
+./src/deploy.sh setup
 ```
+the last command sets up the directory where the generated pages are stored
+for deployment on GitHub.
+
 Issuing `cabal build` will generate the site binary in a new top-level directory
 directory `dist/`. Object files created by GHC are stored here. The
 `site` binary, stored at the top level, is the actual binary which is used for
@@ -47,4 +52,4 @@ sub-directories: a directory `cache/` for cached content and a directory
 
 **Deploy** puts the compiled site into top-level directory `deploy/`
 which is git-controlled and force pushes the content to the master branch,
-effectively deploying (on GitHub).
+effectively deploying.
