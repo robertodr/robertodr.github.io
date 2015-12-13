@@ -20,8 +20,8 @@ Entry           | Purpose
 provider/       | compilable content
 src/            | Hakyll, Pandoc customizations
 Setup.hs        | build type
-blaenk.cabal    | dependency management
-readme.markdown | repository information
+totaltrash.cabal    | dependency management
+readme.markdown     | repository information
 
 I use a [Cabal sandbox](http://coldwa.st/e/blog/2013-08-20-Cabal-sandbox.html) to build the website:
 ```

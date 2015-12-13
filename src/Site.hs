@@ -37,11 +37,11 @@ hakyllConf = defaultConfiguration {
 
 feedConf :: FeedConfiguration
 feedConf = FeedConfiguration {
-    feedTitle = "Jorge Israel Peña"
+    feedTitle = "TotalTrash"
   , feedDescription = "Personal Site"
-  , feedAuthorName = "Jorge Israel Peña"
-  , feedAuthorEmail = "jorge.israel.p@gmail.com"
-  , feedRoot = "http://www.blaenkdenum.com"
+  , feedAuthorName = "Roberto Di Remigio"
+  , feedAuthorEmail = "roberto.diremigio@gmail.com"
+  , feedRoot = "http://totaltrash.xyz/"
   }
 
 cleanPreview :: IO ()

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-REMOTE="git@github.com:blaenk/blaenk.github.io.git"
+REMOTE="git@github.com:robertodr/robertodr.github.io.git"
 SITE="generated/deploy/out"
 DEPLOY="deploy/"
 
@@ -62,14 +62,14 @@ deploy() {
   info "cleaned out $DEPLOY"
 
   info "building site"
-  
+
   if [[ "$OSTYPE"x == "msys"x ]]; then
     # no unicode support in msys, so invoke powershell and establish code page
     powershell "chcp 65001; ./site build" > /dev/null
   else
     ./site build > /dev/null
   fi
-  
+
   cp -r "$SITE"/* $DEPLOY
   info "copied $SITE into $DEPLOY"
 

@@ -55,7 +55,7 @@ defaultCtx = mconcat
   , pathField "path"
   , constField "commentsJS" ""
   , constField "pushJS" ""
-  , constField "title" "Blaenk Denum"
+  , constField "title" "TotalTrash"
   , missingField
   ]
 
@@ -89,10 +89,10 @@ tagsCtx pat tag = mconcat
 titleField :: Context String
 titleField = field "pageTitle" $ \item -> do
   title <- getMetadataField (itemIdentifier item) "title"
-  maybe (return "Blaenk Denum") (return . (++ " - Blaenk Denum")) title
+  maybe (return "TotalTrash") (return . (++ " - TotalTrash")) title
 
 customTitleField :: String -> Context String
-customTitleField value = constField "pageTitle" $ value ++ " - Blaenk Denum"
+customTitleField value = constField "pageTitle" $ value ++ " - TotalTrash"
 
 -- url field without /index.html
 niceUrlField :: String -> Context a
@@ -194,8 +194,8 @@ gitTag key = field key $ \item -> do
     sha     <- gitLog "%h"
     message <- gitLog "%s"
 
-    let history = "https://github.com/blaenk/blaenk.github.io/commits/source/" ++ fp
-        commit  = "https://github.com/blaenk/blaenk.github.io/commit/" ++ sha
+    let history = "https://github.com/robertodr/robertodr.github.io/commits/source/" ++ fp
+        commit  = "https://github.com/robertodr/robertodr.github.io/commit/" ++ sha
 
     return $ if null sha
                then "Not Committed"
