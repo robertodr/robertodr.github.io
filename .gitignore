@@ -1,0 +1,8 @@
+.DS_Store
+/site
+/site.exe
+dist/
+generated/
+deploy/
+.cabal-sandbox/
+cabal.sandbox.config

@@ -1,0 +1,12 @@
+$for(archives)$
+  <h2 class="archive-year">$year$</h2>
+  <ul class="archive">
+  $for(items)$
+    <li class="archive-item">
+      <a class="item-link" href="$url$" title="$excerpt$">
+        $title$
+      </a>
+    </li>
+  $endfor$
+  </ul>
+$endfor$
