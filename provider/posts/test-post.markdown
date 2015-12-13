@@ -1,6 +1,6 @@
 ---
 title: Test Post
-published: September 19, 2012
+published: December 13, 2015
 excerpt: Site design and Markdown test
 tags: Pandoc
 toc: off
@@ -69,5 +69,5 @@ Here it is numbered for you:
 
 As you can see, there's lots of work to do! Aenean mauris augue, faucibus vel sagittis nec, viverra sit amet sapien. Etiam neque nisi, molestie vel lacinia a, scelerisque eget justo. Suspendisse imperdiet lectus eu metus malesuada vel vehicula libero rutrum. Nulla facilisi. In lectus nisl, semper ac imperdiet eu, ultricies luctus erat. Sed ultrices lectus in `massa tincidunt` fringilla. Aenean lectus tortor, tempus a sagittis vitae, hendrerit eget lacus.
 
-[^1]: Cras nibh elit, mollis eu eleifend sed, faucibus in velit. 
-[^2]: This is the awesome constant 
+[^1]: Cras nibh elit, mollis eu eleifend sed, faucibus in velit.
+[^2]: This is the awesome constant
