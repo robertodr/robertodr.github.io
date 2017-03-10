@@ -90,7 +90,9 @@ main = do
   hakyllWith hakyllConf' $ do
     tags <- buildTags postsPattern (fromCapture "tags/*.html")
 
-    match ("images/**" .||. "js/*" .||. "static/**" .||. "favicon.png" .||. "CNAME" .||. "keybase.txt") $ do
+    match ("images/**" .||. "js/*" .||. "static/**" .||. "favicon.png"
+                       .||. "CNAME" .||. "keybase.txt" .||. "googlebdd3afcf40d8a945.html"
+                       .||. "robots.txt" .||. "sitemap.xml") $ do
       route idRoute
       compile copyFileCompiler
 
