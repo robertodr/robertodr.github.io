@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>TotalTrash</title>
+    <link href="http://totaltrash.xyz//atom.xml" rel="self" />
+    <link href="http://totaltrash.xyz/" />
+    <id>http://totaltrash.xyz//atom.xml</id>
+    <author>
+        <name>Roberto Di Remigio</name>
+        <email>roberto.diremigio@gmail.com</email>
+    </author>
+    <updated>2017-03-10T00:00:00Z</updated>
+    <entry>
+    <title>Song of the Week, 10</title>
+    <link href="http://totaltrash.xyz//posts/sow10_2017/" />
+    <id>http://totaltrash.xyz//posts/sow10_2017/</id>
+    <published>2017-03-10T00:00:00Z</published>
+    <updated>2017-03-10T00:00:00Z</updated>
+    <summary type="html"><![CDATA[<p>I found this out listening to a <a href="https://www.mixcloud.com/TheVinylFactory/vf-mix-08-elijah-wood-zach-cowie-aka-wooden-wisdom/">podcast</a> on <a href="https://www.mixcloud.com">MixCloud</a>. The podcast was put together by DJ Wooden Wisdom (Elijah Wood &amp; Zach Cowie) for <a href="http://thevinylfactory.com/">The Vinyl Factory</a>. Here is the <a href="http://thevinylfactory.com/features/listen-to-an-exclusive-elijah-wood-zach-cowie-aka-wooden-wisdom-vinyl-only-mix/">tracklist</a>.</p>
+<p><a href="https://youtu.be/8JGohtIFM_Q" title="The Greatest Name That Lives"><img src="../../../images/videos/youtube-the_greatest_name_that_lives.jpg" alt="The Greatest Name That Lives" /></a></p>]]></summary>
+</entry>
+<entry>
+    <title>Song of the Week, 21</title>
+    <link href="http://totaltrash.xyz//posts/sow21_2016/" />
+    <id>http://totaltrash.xyz//posts/sow21_2016/</id>
+    <published>2016-05-27T00:00:00Z</published>
+    <updated>2016-05-27T00:00:00Z</updated>
+    <summary type="html"><![CDATA[<p><a href="https://youtu.be/HxPWQsF_ixo" title="Lethal Musk"><img src="../../../images/videos/youtube-lethal_musk.jpg" alt="Lethal Musk" /></a></p>]]></summary>
+</entry>
+<entry>
+    <title>Song of the Week, 20</title>
+    <link href="http://totaltrash.xyz//posts/sow20_2016/" />
+    <id>http://totaltrash.xyz//posts/sow20_2016/</id>
+    <published>2016-05-19T00:00:00Z</published>
+    <updated>2016-05-19T00:00:00Z</updated>
+    <summary type="html"><![CDATA[<p><a href="https://youtu.be/JEJpmDUMKco" title="Leave Me Alone"><img src="../../../images/videos/youtube-leave_me_alone.jpg" alt="Leave Me ALone" /></a></p>]]></summary>
+</entry>
+<entry>
+    <title>Welcome</title>
+    <link href="http://totaltrash.xyz//posts/welcome/" />
+    <id>http://totaltrash.xyz//posts/welcome/</id>
+    <published>2016-04-27T00:00:00Z</published>
+    <updated>2016-04-27T00:00:00Z</updated>
+    <summary type="html"><![CDATA[<p><a href="https://youtu.be/3dknzzBkX7U" title="Total Trash"><img src="../../../images/videos/youtube-total_trash.jpg" alt="Total Trash" /></a></p>]]></summary>
+</entry>
+<entry>
+    <title>Test Post</title>
+    <link href="http://totaltrash.xyz//posts/test-post/" />
+    <id>http://totaltrash.xyz//posts/test-post/</id>
+    <published>2015-12-13T00:00:00Z</published>
+    <updated>2015-12-13T00:00:00Z</updated>
+    <summary type="html"><![CDATA[<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dolor nisi, feugiat sit amet egestas sit amet, mattis sit amet velit. Proin quis metus id mi vulputate adipiscing eget et <strong>sapien</strong>. Sed iaculis auctor sem ac convallis <a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. Cras nisi libero, dignissim quis facilisis et, bibendum eget enim. Vivamus est leo, tristique ut adipiscing vitae, malesuada adipiscing tellus. Integer nec aliquam justo. Nam ac lacus erat. In <strong><em>hac habitasse platea</em></strong> dictumst. Donec pharetra, lectus sit amet ultrices fringilla, metus mi auctor ligula, in hendrerit dui arcu eu leo.</p>
+<p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nulla facilisi. Vestibulum consectetur nulla eget erat <em>fermentum malesuada</em>. Nullam ultricies nulla ut eros vulputate sed cursus tortor faucibus. Cras ac risus mauris. Suspendisse molestie elementum luctus. Vestibulum <a href="http://www.google.com">venenatis blandit</a> velit ac pretium. Press <kbd>CTRL</kbd> + <kbd>X</kbd>.</p>
+<p><br /><span class="math">$$ i\hbar\frac{\partial \psi}{\partial t}
+  = \frac{-\hbar^2}{2m} \left(
+    \frac{\partial^2}{\partial x^2}
+    + \frac{\partial^2}{\partial y^2}
+    + \frac{\partial^2}{\partial z^2}
+  \right) \psi + V \psi $$</span><br /></p>
+<p>Nulla facilisi. Cras lectus velit, rhoncus et mollis eget, ultricies quis ligula. Integer ornare nibh in est molestie tempus. Praesent bibendum placerat diam id gravida. Fusce et velit eget dui laoreet interdum eget id arcu. Ut et massa nibh, ut mollis augue. In hac habitasse platea dictumst. Sed massa orci, <strong>venenatis</strong> vitae dapibus sit amet, varius ut nibh. Ut vel enim leo, at posuere nisi. In elementum sem vel nibh malesuada sagittis.</p>
+<p><br /><span class="math">$$R_{ab} - {\textstyle 1 \over 2}R\,g_{ab} + \Lambda\ g_{ab} = \kappa\, T_{ab}$$</span><br /></p>
+<p>Nulla facilisi. Cras lectus velit, rhoncus et mollis eget, ultricies quis ligula. Integer ornare nibh in est molestie tempus. Praesent bibendum placerat diam id gravida. Fusce et velit eget dui laoreet interdum eget id arcu. Ut et massa nibh, ut mollis augue. In hac habitasse platea dictumst. Sed massa orci, venenatis vitae dapibus sit amet, varius ut nibh. Ut vel enim leo, at posuere nisi. In elementum sem vel nibh malesuada sagittis.</p>
+<pre class="ruby" text="an example of base64 decoding in ruby"><code>require &#39;base64&#39;
+
+File.open(&#39;favicon.png&#39;, &#39;wb&#39;) do |f|
+  f.write(Base64.decode64(base64))
+end</code></pre>
+<p>Donec vitae turpis non augue pulvinar imperdiet eu non erat. Integer mollis diam ac quam lobortis luctus. Suspendisse scelerisque sodales massa sit amet pharetra. <span class="math"><em>Δ</em><em>S</em> = <em>π</em></span> <a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> Donec cursus, velit in mollis dapibus, nunc elit pharetra erat, et dictum sem sapien pretium ligula. Cras nibh elit, mollis eu eleifend sed, faucibus in velit. Aliquam gravida tristique molestie. Donec gravida, diam ac auctor auctor, nulla enim varius sem, non auctor urna mi vitae enim. Cras aliquam semper nibh, quis viverra urna ultrices et. Nunc rhoncus fringilla dapibus.</p>
+<p><img src="http://placekitten.com/720/250" class="center"></p>
+<h1 id="immortal-words" class="notoc">Immortal Words</h1>
+<p>As you can see, there’s lots of work to do! Aenean mauris augue, faucibus vel sagittis nec, viverra sit amet sapien. Etiam neque nisi, molestie vel lacinia a, scelerisque eget justo. Suspendisse imperdiet lectus eu metus malesuada vel vehicula libero rutrum. Nulla facilisi. Cras lectus velit, rhoncus et mollis eget, ultricies quis ligula. Integer ornare nibh in est molestie tempus. Praesent bibendum placerat diam id gravida. Fusce et velit eget dui laoreet interdum eget id arcu.</p>
+<blockquote>
+<p>Too many people have opinions on things they know nothing about. And the more ignorant they are, the more opinions they have.</p>
+<p><cite><strong>Thomas Hildern</strong> on <a href="http://fallout.wikia.com/wiki/Thomas_Hildern">Fallout Wiki</a></cite></p>
+</blockquote>
+<p>Aenean mauris augue, faucibus vel sagittis nec, viverra sit amet sapien. Etiam neque nisi, molestie vel lacinia a, scelerisque eget justo. Suspendisse imperdiet lectus eu metus malesuada vel vehicula libero rutrum. Nulla facilisi.</p>
+<h2 id="the-meaning-of-life" class="notoc">The Meaning of Life</h2>
+<p><img src="http://placekitten.com/150/100" class="right" title="Place Kitten #3"></p>
+<p>Aenean tristique, magna a semper venenatis, orci odio tempor lorem, ac molestie ligula enim ac urna. Fusce egestas nisl id massa porta vitae pretium tellus aliquet. Morbi tempor arcu sit amet felis hendrerit aliquam. Nulla facilisi. Suspendisse diam tortor, pharetra ac porta eu, ullamcorper nec lectus. Sed nulla turpis, blandit et tincidunt vel, <code>condimentum</code> et sapien. Aliquam dignissim blandit pharetra. Mauris ornare accumsan libero at bibendum. Morbi dui nisl, aliquet sit amet gravida sit amet, mollis commodo nulla. Quisque eu felis purus.</p>
+<p><br /><span class="math">∀<em>x</em>, <em>y</em> : ℤ, <em>x</em> &gt; 3 ∧ <em>y</em> &lt; 2 ⇒ <em>x</em><sup>2</sup> − 2<em>y</em> &gt; 5</span><br /></p>
+<p>Aenean mauris augue, faucibus vel sagittis nec, viverra sit amet sapien. Etiam neque nisi, molestie vel lacinia a, scelerisque eget justo. Suspendisse imperdiet lectus eu metus malesuada vel vehicula libero rutrum. Nulla facilisi. In lectus nisl, semper ac imperdiet eu, ultricies luctus erat. Sed ultrices lectus in <code>massa tincidunt</code> fringilla. Aenean lectus tortor, tempus a sagittis vitae, hendrerit eget lacus.</p>
+<h3 id="things-to-do" class="notoc">Things to do</h3>
+<ul>
+<li>first do this</li>
+<li>then do this other thing</li>
+<li>then maybe, if you’re not tired, do this last thing</li>
+</ul>
+<p>Here it is numbered for you:</p>
+<ol type="1">
+<li>first do this</li>
+<li>then do this other thing</li>
+<li>then maybe, if you’re not tired, do this last thing</li>
+</ol>
+<p>As you can see, there’s lots of work to do! Aenean mauris augue, faucibus vel sagittis nec, viverra sit amet sapien. Etiam neque nisi, molestie vel lacinia a, scelerisque eget justo. Suspendisse imperdiet lectus eu metus malesuada vel vehicula libero rutrum. Nulla facilisi. In lectus nisl, semper ac imperdiet eu, ultricies luctus erat. Sed ultrices lectus in <code>massa tincidunt</code> fringilla. Aenean lectus tortor, tempus a sagittis vitae, hendrerit eget lacus.</p>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Cras nibh elit, mollis eu eleifend sed, faucibus in velit.<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>This is the awesome constant<a href="#fnref2">↩</a></p></li>
+</ol>
+</section>]]></summary>
+</entry>
+
+</feed>
