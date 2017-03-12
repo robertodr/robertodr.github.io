@@ -42,21 +42,37 @@
       }
     }
 
-    a[title="twitter"]:hover {
-      color: #2eb8e7;
-    }
-
-    a[title="github"]:hover {
+    a[title="GitHub"]:hover {
       color: #286da3;
     }
 
-    a[title="stackoverflow"]:hover,
-    a[title="feed"]:hover {
-      color: #d85620;
+    a[title="GitLab"]:hover {
+      color: #ff9900;
     }
 
-    a[title="email"]:hover {
+    a[title="Twitter"]:hover {
+      color: #2eb8e7;
+    }
+
+    a[title="LinkedIn"]:hover {
+      color: #0033cc;
+    }
+
+    a[title="Google+"]:hover {
+      color: #ff0000;
+    }
+
+    a[title="Email"]:hover {
       color: #f66;
+    }
+
+    a[title="Keybase"]:hover {
+      color: #00cc00;
+    }
+
+    a[title="StackOverflow"]:hover,
+    a[title="Feed"]:hover {
+      color: #d85620;
     }
   }
 }
