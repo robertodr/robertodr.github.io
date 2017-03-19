@@ -412,7 +412,7 @@ article {
       color: #990000; }
       article .entry-content a[id^="fnref"] sup {
         vertical-align: baseline;
-        font-family: Hack, Menlo, Monaco, "DejaVu Sans Mono", Consolas, monospace;
+        font-family: "Hack", Menlo, Monaco, "DejaVu Sans Mono", Consolas, monospace;
         font-size: inherit; }
         article .entry-content a[id^="fnref"] sup:before {
           content: "[#"; }
@@ -994,4 +994,4 @@ figure.codeblock {
 
 .entry-content code,
 .entry-content pre {
-  font-family: Hack, Menlo, Monaco, "DejaVu Sans Mono", Consolas, monospace; }
+  font-family: "Hack", Menlo, Monaco, "DejaVu Sans Mono", Consolas, monospace; }
