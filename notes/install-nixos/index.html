@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>TotalTrash</title>
+  <title>Installing NixOS - TotalTrash</title>
   <meta name="author" content="Roberto Di Remigio">
 
   <meta name="HandheldFriendly" content="True">
@@ -69,57 +69,36 @@
   <input type="hidden" name="q" value="site:totaltrash.xyz">
 </form>
 
-    
-  <h2 class="archive-year">2017</h2>
-  <ul class="archive">
-  
-    <li class="archive-item">
-      <a class="item-link" href="/posts/turn-on-compiler-warnings/" title="Compilers save lives">
-        Turn On Compiler Warnings!
-      </a>
-    </li>
-  
-    <li class="archive-item">
-      <a class="item-link" href="/posts/sow10_2017/" title="Third SoW post">
-        Song of the Week, 10
-      </a>
-    </li>
-  
-  </ul>
+    <article class="post">
+  <h2 class="title"><a href="/notes/install-nixos/"><span>Installing NixOS</span></a></h2>
+  <div class="entry-content"><h2 id="get-nixos-on-the-usb-stick" class="notoc">Get NixOS on the USB stick</h2>
+<p>Formatting the USB stick: 1. Find out the device:</p>
+<figure class="codeblock"><pre><code class="highlight language-bash">sudo fdisk -l
+</code></pre></figure>
+<ol start="2" type="1">
+<li><p>Unmount</p>
+<figure class="codeblock"><pre><code class="highlight language-bash">sudo umount /dev/sd??
+</code></pre></figure></li>
+<li><p>Format to FAT32</p>
+<figure class="codeblock"><pre><code class="highlight language-bash">sudo mkdosfs -F <span class="m">32</span> -I /dev/sd??
+</code></pre></figure></li>
+<li>Detach and reattach</li>
+<li><p>Copy NixOS on the USB</p>
+<figure class="codeblock"><pre><code class="highlight language-bash">sudo dd <span class="nv">bs</span><span class="o">=</span>4M <span class="k">if</span><span class="o">=</span>nixos.iso <span class="nv">of</span><span class="o">=</span>/dev/sd??/
+</code></pre></figure></li>
+</ol></div>
+  <div class="meta">
+    <div class="meta-component"><i class="fa fa-calendar fa-fw"></i> April  4, 2017</div>
+    <div class="meta-component"><i class="fa fa-code-fork fa-fw"></i> <a href="https://github.com/robertodr/robertodr.github.io/commits/source/provider/notes/install-nixos.md">History</a><span class="hash">, <a href="https://github.com/robertodr/robertodr.github.io/commit/3c5c524" title="Add one note and one post">3c5c524</a></span></div>
+    <div class="meta-component"><i class="fa fa-pencil fa-fw"></i> <a href="..">Notes</a></div>
+  </div>
+</article>
+<section id="comment">
+  <div id="disqus_thread" aria-live="polite">
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
 
-  <h2 class="archive-year">2016</h2>
-  <ul class="archive">
-  
-    <li class="archive-item">
-      <a class="item-link" href="/posts/sow21_2016/" title="Second SoW post">
-        Song of the Week, 21
-      </a>
-    </li>
-  
-    <li class="archive-item">
-      <a class="item-link" href="/posts/sow20_2016/" title="First SoW post">
-        Song of the Week, 20
-      </a>
-    </li>
-  
-    <li class="archive-item">
-      <a class="item-link" href="/posts/welcome/" title="First real post">
-        Welcome
-      </a>
-    </li>
-  
-  </ul>
-
-  <h2 class="archive-year">2015</h2>
-  <ul class="archive">
-  
-    <li class="archive-item">
-      <a class="item-link" href="/posts/test-post/" title="Site design and Markdown test">
-        Test Post
-      </a>
-    </li>
-  
-  </ul>
 
 
     <footer id="footer">
@@ -149,6 +128,31 @@
 
 
 
+<!-- disqus -->
+<script async="true" type="text/javascript">
+  var disqus_shortname = 'totaltrash';
+  var disqus_identifier = 'http://totaltrash.xyz/notes/install-nixos/';
+  var disqus_url = 'http://totaltrash.xyz/notes/install-nixos/';
+  var disqus_script = 'embed.js';
+
+  (function () {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  }());
+
+  jQuery(function (){
+    jQuery(window).bind('orientationchange', function() {
+      DISQUS.reset({
+        reload: true,
+        config: function() {
+          this.page.identifier = 'http://totaltrash.xyz/notes/install-nixos/'
+          this.page.url = 'http://totaltrash.xyz/notes/install-nixos/'
+        }
+      });
+    });
+  });
+</script>
 
 
 <!-- google analytics -->
