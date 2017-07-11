@@ -165,8 +165,13 @@ and reboot when the process is done.
 
 ### First login
 
-Login as root user when the system reboots. In case you forgot to add anything to `configuration.nix` you can already do it now.
-Remember to rebuild your system:
+Login as root user when the system reboots and add the 17.03 channel: 
+
+~~~ {.bash}
+nix-channel --add http://nixos.org/channels/nixos-17.03
+nix-channel --update
+~~~
+Add whatever you need to `configuration.nix` and rebuild your system:
 
 ~~~ {.bash}
 nixos-reduild switch
