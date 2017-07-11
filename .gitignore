@@ -4,5 +4,9 @@
 dist/
 generated/
 deploy/
-.cabal-sandbox/
+.cabal-sandbox
 cabal.sandbox.config
+.stack-work
+thumb/
+thumbs.db
+
