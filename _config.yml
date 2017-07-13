@@ -54,7 +54,7 @@ yandex_site_verification :
 
 # Social Sharing
 twitter:
-  username               :
+  username               : "_boberto_"
 facebook:
   username               :
   app_id                 :
@@ -76,10 +76,10 @@ analytics:
 
 # Site Author
 author:
-  name             : "Your Name"
-  avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "I am an amazing person."
-  location         : "Somewhere"
+  name             : "Roberto Di Remigio"
+  avatar           : "/assets/images/crimsom_king.jpg"
+  bio              : "Quantum chemist."
+  location         : "Tromsø"
   email            :
   uri              :
   bitbucket        :
@@ -88,19 +88,19 @@ author:
   flickr           :
   facebook         :
   foursquare       :
-  github           :
-  gitlab           :
-  google_plus      :
-  keybase          :
+  github           : "robertodr"
+  gitlab           : "robertodr"
+  google_plus      : "robertodr"
+  keybase          : "robertodr"
   instagram        :
   lastfm           :
-  linkedin         :
+  linkedin         : "roberto-di-remigio"
   pinterest        :
   soundcloud       :
-  stackoverflow    : # "123456/username" (the last part of your profile url, e.g. http://stackoverflow.com/users/123456/username)
+  stackoverflow    : "2528668/boberto"
   steam            :
   tumblr           :
-  twitter          :
+  twitter          : "_boberto_"
   vine             :
   weibo            :
   xing             :
@@ -209,16 +209,16 @@ tag_archive:
   type: liquid
   path: /tags/
 # https://github.com/jekyll/jekyll-archives
-# jekyll-archives:
-#   enabled:
-#     - categories
-#     - tags
-#   layouts:
-#     category: archive-taxonomy
-#     tag: archive-taxonomy
-#   permalinks:
-#     category: /categories/:name/
-#     tag: /tags/:name/
+jekyll-archives:
+  enabled:
+    - categories
+    - tags
+  layouts:
+    category: archive-taxonomy
+    tag: archive-taxonomy
+  permalinks:
+    category: /categories/:name/
+    tag: /tags/:name/
 
 
 # HTML Compression
