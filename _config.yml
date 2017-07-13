@@ -77,7 +77,7 @@ analytics:
 # Site Author
 author:
   name             : "Roberto Di Remigio"
-  avatar           : "/assets/images/crimsom_king.jpg"
+  avatar           : "assets/images/crimsom_king.jpg"
   bio              : "Quantum chemist."
   location         : "Tromsø"
   email            :
@@ -90,11 +90,11 @@ author:
   foursquare       :
   github           : "robertodr"
   gitlab           : "robertodr"
-  google_plus      : "robertodr"
+  google_plus      : 
   keybase          : "robertodr"
   instagram        :
   lastfm           :
-  linkedin         : "roberto-di-remigio"
+  linkedin         : "roberto-di-remigio-0166b169"
   pinterest        :
   soundcloud       :
   stackoverflow    : "2528668/boberto"
