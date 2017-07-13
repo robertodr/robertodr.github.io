@@ -1,9 +1,0 @@
----
-title: Song of the Week, 21
-published: May 27, 2016
-excerpt: Second SoW post
-tags: Music, SoW
-toc: off
----
-
-[![Lethal Musk](../../../images/videos/youtube-lethal_musk.jpg)](https://youtu.be/HxPWQsF_ixo "Lethal Musk")
