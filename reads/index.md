@@ -3,6 +3,6 @@ layout: single
 title: Reads
 ---
 
-{% include toc.html %}
+{% include toc %}
 
 Nothing here yet!

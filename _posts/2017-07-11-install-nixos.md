@@ -5,7 +5,7 @@ excerpt: Instructions/commands to install NixOS
 tags: NixOS
 ---
 
-{% include toc.html %}
+{% include toc %}
 
 ## Get NixOS on the USB stick
 

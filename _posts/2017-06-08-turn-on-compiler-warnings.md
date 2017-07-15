@@ -7,7 +7,7 @@ tags: [C++, compilers]
 published: July 8, 2017
 ---
 
-{% include toc.html %}
+{% include toc %}
 
 _This post originally appeared on [DevCafe](https://dev-cafe.github.io/2017/06/04/turn-on-compiler-warnings/)_
 

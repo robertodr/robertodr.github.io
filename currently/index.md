@@ -3,7 +3,7 @@ layout: single
 title: Currently
 ---
 
-{% include toc.html %}
+{% include toc %}
 
 My current activities. Possibly not up-to-date.
 

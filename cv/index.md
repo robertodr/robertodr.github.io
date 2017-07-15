@@ -5,6 +5,6 @@ modified: 2017-07-15
 excerpt: "Roberto Di Remigio's CV. Quantum chemist"
 ---
 
-{% include toc.html %}
+{% include toc %}
 
 Nothing here yet!
