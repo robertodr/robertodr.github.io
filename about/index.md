@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: single
 title: About [Total Trash]
 tags: [about]
 modified: 2017-07-15T10:07:00+01:00

@@ -1,8 +1,8 @@
 ---
-layout: page
+layout: single
 title: Reads
 ---
 
-{% include _toc.html %}
+{% include toc.html %}
 
 Nothing here yet!

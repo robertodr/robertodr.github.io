@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: single
 title: Turn On Compiler Warnings!
 author: Roberto Di Remigio
 excerpt: Compilers save lives
@@ -7,7 +7,7 @@ tags: [C++, compilers]
 published: July 8, 2017
 ---
 
-{% include _toc.html %}
+{% include toc.html %}
 
 _This post originally appeared on [DevCafe](https://dev-cafe.github.io/2017/06/04/turn-on-compiler-warnings/)_
 
