@@ -1,10 +1,14 @@
 ---
-title: About
+layout: page
+title: About [Total Trash]
+tags: [about]
+modified: 2017-07-15T10:07:00+01:00
 ---
 
 <img src="/images/crimson_king.jpg" class="right" width="256" id="me">
 
 Hi. I'm Roberto Di Remigio.
+[Total Trash](https://totaltrash.xyz) is a collection of stuff I write.
 I am a PhD student in [theoretical chemistry] at the University of Tromsø, Norway.
 My current research project is on [continuum solvation models].
 I am a developer of [PCMSolver], an application programming interface offering

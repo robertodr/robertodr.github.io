@@ -1,9 +1,11 @@
 ---
+layout: page
 title: Installing NixOS
 excerpt: Instructions/commands to install NixOS
 tags: NixOS
-toc: off
 ---
+
+{% include _toc.html %}
 
 ## Get NixOS on the USB stick
 

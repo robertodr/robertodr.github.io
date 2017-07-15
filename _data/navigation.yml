@@ -1,13 +1,17 @@
 # Site navigation links
 
-- title: About
-  url: /about/
+main:
+  - title: About
+    url: /about/
 
-- title: Work 
-  url: /work/
-
-- title: Currently
-  url: /currently/
-
-- title: Reads
-  url: /reads/
+  - title: Work 
+    url: /work/
+  
+  - title: Currently
+    url: /currently/
+  
+  - title: Reads
+    url: /reads/
+  
+  - title: Posts
+    url: /posts/

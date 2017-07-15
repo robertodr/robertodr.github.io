@@ -1,6 +1,9 @@
 ---
+layout: page
 title: Currently
 ---
+
+{% include _toc.html %}
 
 My current activities. Possibly not up-to-date.
 
