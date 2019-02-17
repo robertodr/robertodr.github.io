@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <meta name="referrer" content="no-referrer">
+    <link href="../favicon.png" rel="shortcut icon">
+    <link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Fira+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <script type="text/javascript" src="../vendor/highlight.pack.js"></script>
+    <script type="text/javascript" src="../vendor/highlight.line-numbers.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML" async></script>
+    <link rel="stylesheet" href="../vendor/normalize.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style.css" />
+    <title>
+      totaltrash.xyz
+      
+      – Installing NixOS
+      
+    </title>
+  </head>
+  <body>
+    <main>
+      <article>
+        <h1>
+  Installing NixOS
+</h1>
+
+<nav>
+  <a href="../">
+    <i class="fa fa-chevron-left" style="font-size:0.7em"></i>
+    Go back to index
+  </a>
+</nav>
+
+<div>
+  <div id="false_toc">
+    <h2>Contents</h2>
+  <ul>
+  <li><a href="#get-nixos-on-the-usb-stick">Get NixOS on the USB stick</a></li>
+  <li><a href="#install-nixos">Install NixOS</a><ul>
+  <li><a href="#booting-and-partitioning">Booting and partitioning</a></li>
+  <li><a href="#setting-up-the-encryption-lvm-groups-and-volumes">Setting up the encryption, LVM groups and volumes</a></li>
+  <li><a href="#get-the-installation-going">Get the installation going!</a></li>
+  <li><a href="#first-login">First login</a></li>
+  </ul></li>
+  </ul>
+  </div>
+<p>{% include toc %}</p>
+<h3 id="get-nixos-on-the-usb-stick">Get NixOS on the USB stick</h3>
+<p>Formatting the USB stick: 1. Find out the device:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">fdisk</span> -l</a></code></pre></div>
+<ol start="2" type="1">
+<li>Unmount</li>
+</ol>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">sudo</span> umount /dev/sd??</a></code></pre></div>
+<ol start="3" type="1">
+<li>Format to FAT32</li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">sudo</span> mkdosfs -F 32 -I /dev/sd??</a></code></pre></div>
+<ol start="4" type="1">
+<li>Detach and reattach</li>
+<li>Copy NixOS on the USB</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">sudo</span> dd bs=4M if=nixos.iso of=/dev/sd??/</a></code></pre></div>
+<h3 id="install-nixos">Install NixOS</h3>
+<p>My laptop is a <a href="http://www3.lenovo.com/us/en/laptops/thinkpad/t-series/t440s/">Lenovo Thinkpad T440s</a> and I’ve followed (mostly) the set of instructions on <a href="https://chris-martin.org/2015/installing-nixos">Chris Martin’s blog</a>.</p>
+<h4 id="booting-and-partitioning">Booting and partitioning</h4>
+<p>First of all, I had to switch to only using UEFI in the boot menu and then boot from the USB stick. I wanted to wipe the whole disk and reinstall NixOS on an encrypted partition. The NixOS installer does not (yet!) have a graphical user interface for partitioning, but what I wanted to do is fairly straightforward to achieve using <code>fdisk</code>. I followed the advice posted on <a href="https://unix.stackexchange.com/a/190145">StackOverflow</a><a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> and ended up creating the following partition table:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="ex">Disk</span> /dev/sda: 238.5 GiB, 256060514304 bytes, 500118192 sectors</a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="ex">Units</span>: sectors of 1 * 512 = 512 bytes</a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="ex">Sector</span> size (logical/physical)<span class="bu">:</span> 512 bytes / 512 bytes</a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="ex">I/O</span> size (minimum/optimal)<span class="bu">:</span> 512 bytes / 512 bytes</a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="ex">Disklabel</span> type: gpt</a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="ex">Disk</span> identifier: C57FCAC2-37B1-4E17-B70F-D1BE189BB48F</a>
+<a class="sourceLine" id="cb5-7" title="7"></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="ex">Device</span>       Start       End   Sectors  Size Type</a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="ex">/dev/sda1</span>     2048      4047      2000 1000K BIOS boot</a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="ex">/dev/sda2</span>     4096   1028095   1024000  500M EFI System</a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="ex">/dev/sda3</span>  1028096 500118158 499090063  238G Linux LVM</a></code></pre></div>
+<p>The <a href="https://en.wikipedia.org/wiki/Logical_Volume_Manager_(Linux)">LVM</a> device will contain the OS and will be partitioned into the root folder <code>/</code> and the swap.</p>
+<h4 id="setting-up-the-encryption-lvm-groups-and-volumes">Setting up the encryption, LVM groups and volumes</h4>
+<p>Let’s move on to encrypting the device where the OS will actually live, <em>i.e.</em> <code>/dev/sda3</code>. I am here following the instructions reported on the NixOS installation instructions. The first command encrypts <code>/dev/sda3</code> and will prompt you to insert a password, the second command opens the encrypted partition:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="ex">cryptsetup</span> luksFormat /dev/sda3</a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="ex">cryptsetup</span> luksOpen /dev/sda3 enc-pv</a></code></pre></div>
+<p>OK, great! Time to make space for <code>/</code> and the swap:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1"><span class="ex">pvcreate</span> /dev/mapper/enc-pv</a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="ex">vgcreate</span> vg /dev/mapper/enc-pv</a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="ex">lvcreate</span> -n swap vg -L 8G</a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="ex">lvcreate</span> -n root vg -l 100%FREE</a></code></pre></div>
+<p>and to format:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" title="1"><span class="ex">mkfs.vfat</span> -n BOOT /dev/sda2</a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="ex">mkfs.ext4</span> -L root /dev/vg/root</a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="ex">mkswap</span> -L swap /dev/vg/swap</a></code></pre></div>
+<p>At this point, launching <code>fdisk -l</code> you will see the following output (or at least I do!):</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" title="1"><span class="ex">Disk</span> /dev/sda: 238.5 GiB, 256060514304 bytes, 500118192 sectors</a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="ex">Units</span>: sectors of 1 * 512 = 512 bytes</a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="ex">Sector</span> size (logical/physical)<span class="bu">:</span> 512 bytes / 512 bytes</a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="ex">I/O</span> size (minimum/optimal)<span class="bu">:</span> 512 bytes / 512 bytes</a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="ex">Disklabel</span> type: gpt</a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="ex">Disk</span> identifier: C57FCAC2-37B1-4E17-B70F-D1BE189BB48F</a>
+<a class="sourceLine" id="cb9-7" title="7"></a>
+<a class="sourceLine" id="cb9-8" title="8"><span class="ex">Device</span>       Start       End   Sectors  Size Type</a>
+<a class="sourceLine" id="cb9-9" title="9"><span class="ex">/dev/sda1</span>     2048      4047      2000 1000K BIOS boot</a>
+<a class="sourceLine" id="cb9-10" title="10"><span class="ex">/dev/sda2</span>     4096   1028095   1024000  500M EFI System</a>
+<a class="sourceLine" id="cb9-11" title="11"><span class="ex">/dev/sda3</span>  1028096 500118158 499090063  238G Linux LVM</a>
+<a class="sourceLine" id="cb9-12" title="12"></a>
+<a class="sourceLine" id="cb9-13" title="13"></a>
+<a class="sourceLine" id="cb9-14" title="14"><span class="ex">Disk</span> /dev/mapper/root: 238 GiB, 255532015104 bytes, 499085967 sectors</a>
+<a class="sourceLine" id="cb9-15" title="15"><span class="ex">Units</span>: sectors of 1 * 512 = 512 bytes</a>
+<a class="sourceLine" id="cb9-16" title="16"><span class="ex">Sector</span> size (logical/physical)<span class="bu">:</span> 512 bytes / 512 bytes</a>
+<a class="sourceLine" id="cb9-17" title="17"><span class="ex">I/O</span> size (minimum/optimal)<span class="bu">:</span> 512 bytes / 512 bytes</a>
+<a class="sourceLine" id="cb9-18" title="18"></a>
+<a class="sourceLine" id="cb9-19" title="19"></a>
+<a class="sourceLine" id="cb9-20" title="20"><span class="ex">Disk</span> /dev/mapper/vg-swap: 8 GiB, 8589934592 bytes, 16777216 sectors</a>
+<a class="sourceLine" id="cb9-21" title="21"><span class="ex">Units</span>: sectors of 1 * 512 = 512 bytes</a>
+<a class="sourceLine" id="cb9-22" title="22"><span class="ex">Sector</span> size (logical/physical)<span class="bu">:</span> 512 bytes / 512 bytes</a>
+<a class="sourceLine" id="cb9-23" title="23"><span class="ex">I/O</span> size (minimum/optimal)<span class="bu">:</span> 512 bytes / 512 bytes</a>
+<a class="sourceLine" id="cb9-24" title="24"></a>
+<a class="sourceLine" id="cb9-25" title="25"></a>
+<a class="sourceLine" id="cb9-26" title="26"><span class="ex">Disk</span> /dev/mapper/vg-root: 230 GiB, 246939648000 bytes, 482304000 sectors</a>
+<a class="sourceLine" id="cb9-27" title="27"><span class="ex">Units</span>: sectors of 1 * 512 = 512 bytes</a>
+<a class="sourceLine" id="cb9-28" title="28"><span class="ex">Sector</span> size (logical/physical)<span class="bu">:</span> 512 bytes / 512 bytes</a>
+<a class="sourceLine" id="cb9-29" title="29"><span class="ex">I/O</span> size (minimum/optimal)<span class="bu">:</span> 512 bytes / 512 bytes</a></code></pre></div>
+<h4 id="get-the-installation-going">Get the installation going!</h4>
+<p>Let’s mount the disks and volumes to <code>/mnt</code>:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" title="1"><span class="fu">mount</span> /dev/vg/root /mnt</a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="fu">mkdir</span> /mnt/boot</a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="fu">mount</span> /dev/sda2 /mnt/boot</a></code></pre></div>
+<p>and activate the swap:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1"><span class="ex">swapon</span> /dev/vg/swap</a></code></pre></div>
+<p>NixOS <em>declaratively</em> defines the configuration of the system. The starting point is to run the following:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" title="1"><span class="ex">nixos-generate-config</span> --root /mnt</a></code></pre></div>
+<p>that generates <code>hardware-configuration.nix</code> (<strong>do not touch</strong>) and <code>configuration.nix</code> in the directory <code>/mnt/etc/nixos</code>. My <code>configuration.nix</code> is available on <a href="https://github.com/robertodr/nixos-configuration">GitHub</a> and I can just clone the repo with and populate the <code>/mnt/etc/nixos</code> directory with the contents of the repo. This will not only configure the system as I like, but also install all the software that I need in one go. Once the <code>configuration.nix</code> is all set run:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" title="1"><span class="ex">nixos-install</span></a></code></pre></div>
+<p>and reboot when the process is done.</p>
+<h4 id="first-login">First login</h4>
+<p>Login as root user when the system reboots and add the 17.03 channel:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" title="1"><span class="ex">nix-channel</span> --add http://nixos.org/channels/nixos-17.03</a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="ex">nix-channel</span> --update</a></code></pre></div>
+<p>Add whatever you need to <code>configuration.nix</code> and rebuild your system:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" title="1"><span class="ex">nixos-reduild</span> switch</a></code></pre></div>
+<p>Moreover, the user that was created in the <code>configuration.nix</code> file does not have a password set! Let’s do it now:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" title="1"><span class="fu">passwd</span> roberto</a></code></pre></div>
+<p>You can now login as a normal user, instead as root. The system is now ready for use!</p>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Thanks to <a href="bast.fr">Radovan Bast</a> for the tip.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+</ol>
+</section>
+</div>
+
+      </article>
+
+    <aside>
+      <h1>
+      Installing NixOS
+      </h1>
+
+      <div class="abstract">
+        
+      </div>
+
+      <nav id="toc">
+      </nav>
+
+      <hr />
+
+      <ul class="fa-ul">
+        <li> <i class="fa-li fa fa-rss"></i> Want to be kept
+        posted? <a href="../rss">There is a RSS feed </a> for that! </li>
+        <li> <i class="fa-li fa fa-crow"></i> The source of this website
+        is available on the Pijul Nest <a href="https://nest.pijul.com/robertodr/totaltrash.xyz">under the
+        terms of the AGPLv3</a>.
+        Found a mistake? <a href="mailto:roberto.diremigio@gmail.com">Shoot an
+        email</a>!  (with <a href="https://man.sr.ht/git.sr.ht/send-email.md">a
+        patch</a>
+        maybe?)</li>
+      </ul>
+    </aside>
+    <aside>
+     <img src="../images/me-by-ilsignorm.png" width="300px">
+    </aside>
+    </main>
+
+    <footer>
+      <p>
+        <a href="https://nest.pijul.com/robertodr/totaltrash.xyz:master/patches/1234567890abcdefghilmnopqrstuvz">
+           https://nest.pijul.com/robertodr/totaltrash.xyz@1234567
+        </a>
+      </p>
+    </footer>
+
+    <script type="text/javascript">
+      // highlightjs
+     hljs.initHighlightingOnLoad();
+      hljs.initLineNumbersOnLoad({
+          singleLine: true
+      });
+
+      // add hint to remote links
+      window.onload =function() {
+        var links = document.links;
+        for (var i = 0, linksLength = links.length; i < linksLength; i++) {
+          if (links[i].hostname != window.location.hostname) {
+            links[i].innerHTML += ' <i class="fa fa-external-link-alt fa-sm" style="font-size:0.7em"></i>';
+          }
+        }
+      }
+
+      // deal with toc, the ugly way
+      var falseToc = document.getElementById('false_toc');
+
+      if (falseToc) {
+        document.getElementById('toc').innerHTML = falseToc.innerHTML;
+        falseToc.innerHTML = '';
+      }
+    </script>
+  </body>
+</html>

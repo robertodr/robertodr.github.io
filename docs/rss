@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"
+    xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel>
+        <title>~totaltrash</title>
+        <link>totaltrash.xyz</link>
+        <description><![CDATA[It's total trash.]]></description>
+        <atom:link href="totaltrash.xyz/rss" rel="self"
+                   type="application/rss+xml" />
+        <lastBuildDate>Sat, 05 Jan 2019 00:00:00 UT</lastBuildDate>
+        <item>
+    <title>The \(n\)-th time is the charm</title>
+    <link>totaltrash.xyz/blog/the-n-th-time-is-the-charm.html</link>
+    <description><![CDATA[<div id='false_toc'>
+    <h2>Contents</h2>
+  <ul>
+  <li><a href="#references">References</a></li>
+  </ul>
+  </div>
+<p>What do you know?</p>
+<p><span class="math display">\[ \ln x = \int_{-\infty}^x \frac 1 y \, dy  \]</span></p>
+<p>And references even!<span class="citation" data-cites="Thom2010-kh"><sup><a href="#ref-Thom2010-kh">1</a></sup></span></p>
+<h3 id="references" class="unnumbered">References</h3>
+<div id="refs" class="references">
+<div id="ref-Thom2010-kh">
+<p>(1) Thom, A. J. W. Stochastic Coupled Cluster Theory. <em>Phys. Rev. Lett.</em> <strong>2010</strong>, <em>105</em> (26), 263004. <a href="https://doi.org/10.1103/PhysRevLett.105.263004" class="uri">https://doi.org/10.1103/PhysRevLett.105.263004</a>.</p>
+</div>
+</div>]]></description>
+    <pubDate>Sat, 05 Jan 2019 00:00:00 UT</pubDate>
+    <guid>totaltrash.xyz/blog/the-n-th-time-is-the-charm.html</guid>
+    <dc:creator>Roberto Di Remigio</dc:creator>
+</item>
+<item>
+    <title>Redesigning Getkw _or_ reinventing the wheel: 0. State of affairs and requirements</title>
+    <link>totaltrash.xyz/blog/getkw-01.html</link>
+    <description><![CDATA[<div id='false_toc'>
+  </div>
+]]></description>
+    <pubDate>Fri, 14 Sep 2018 00:00:00 UT</pubDate>
+    <guid>totaltrash.xyz/blog/getkw-01.html</guid>
+    <dc:creator>Roberto Di Remigio</dc:creator>
+</item>
+<item>
+    <title>Docker Images for Fun and for Profit</title>
+    <link>totaltrash.xyz/blog/docker-images.html</link>
+    <description><![CDATA[<div id='false_toc'>
+  </div>
+]]></description>
+    <pubDate>Thu, 03 May 2018 00:00:00 UT</pubDate>
+    <guid>totaltrash.xyz/blog/docker-images.html</guid>
+    <dc:creator>Roberto Di Remigio</dc:creator>
+</item>
+<item>
+    <title>Installing NixOS</title>
+    <link>totaltrash.xyz/blog/install-nixos.html</link>
+    <description><![CDATA[<div id='false_toc'>
+    <h2>Contents</h2>
+  <ul>
+  <li><a href="#get-nixos-on-the-usb-stick">Get NixOS on the USB stick</a></li>
+  <li><a href="#install-nixos">Install NixOS</a><ul>
+  <li><a href="#booting-and-partitioning">Booting and partitioning</a></li>
+  <li><a href="#setting-up-the-encryption-lvm-groups-and-volumes">Setting up the encryption, LVM groups and volumes</a></li>
+  <li><a href="#get-the-installation-going">Get the installation going!</a></li>
+  <li><a href="#first-login">First login</a></li>
+  </ul></li>
+  </ul>
+  </div>
+<p>{% include toc %}</p>
+<h3 id="get-nixos-on-the-usb-stick">Get NixOS on the USB stick</h3>
+<p>Formatting the USB stick: 1. Find out the device:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">fdisk</span> -l</a></code></pre></div>
+<ol start="2" type="1">
+<li>Unmount</li>
+</ol>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">sudo</span> umount /dev/sd??</a></code></pre></div>
+<ol start="3" type="1">
+<li>Format to FAT32</li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">sudo</span> mkdosfs -F 32 -I /dev/sd??</a></code></pre></div>
+<ol start="4" type="1">
+<li>Detach and reattach</li>
+<li>Copy NixOS on the USB</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="fu">sudo</span> dd bs=4M if=nixos.iso of=/dev/sd??/</a></code></pre></div>
+<h3 id="install-nixos">Install NixOS</h3>
+<p>My laptop is a <a href="http://www3.lenovo.com/us/en/laptops/thinkpad/t-series/t440s/">Lenovo Thinkpad T440s</a> and I’ve followed (mostly) the set of instructions on <a href="https://chris-martin.org/2015/installing-nixos">Chris Martin’s blog</a>.</p>
+<h4 id="booting-and-partitioning">Booting and partitioning</h4>
+<p>First of all, I had to switch to only using UEFI in the boot menu and then boot from the USB stick. I wanted to wipe the whole disk and reinstall NixOS on an encrypted partition. The NixOS installer does not (yet!) have a graphical user interface for partitioning, but what I wanted to do is fairly straightforward to achieve using <code>fdisk</code>. I followed the advice posted on <a href="https://unix.stackexchange.com/a/190145">StackOverflow</a><a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> and ended up creating the following partition table:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="ex">Disk</span> /dev/sda: 238.5 GiB, 256060514304 bytes, 500118192 sectors</a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="ex">Units</span>: sectors of 1 * 512 = 512 bytes</a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="ex">Sector</span> size (logical/physical)<span class="bu">:</span> 512 bytes / 512 bytes</a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="ex">I/O</span> size (minimum/optimal)<span class="bu">:</span> 512 bytes / 512 bytes</a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="ex">Disklabel</span> type: gpt</a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="ex">Disk</span> identifier: C57FCAC2-37B1-4E17-B70F-D1BE189BB48F</a>
+<a class="sourceLine" id="cb5-7" title="7"></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="ex">Device</span>       Start       End   Sectors  Size Type</a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="ex">/dev/sda1</span>     2048      4047      2000 1000K BIOS boot</a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="ex">/dev/sda2</span>     4096   1028095   1024000  500M EFI System</a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="ex">/dev/sda3</span>  1028096 500118158 499090063  238G Linux LVM</a></code></pre></div>
+<p>The <a href="https://en.wikipedia.org/wiki/Logical_Volume_Manager_(Linux)">LVM</a> device will contain the OS and will be partitioned into the root folder <code>/</code> and the swap.</p>
+<h4 id="setting-up-the-encryption-lvm-groups-and-volumes">Setting up the encryption, LVM groups and volumes</h4>
+<p>Let’s move on to encrypting the device where the OS will actually live, <em>i.e.</em> <code>/dev/sda3</code>. I am here following the instructions reported on the NixOS installation instructions. The first command encrypts <code>/dev/sda3</code> and will prompt you to insert a password, the second command opens the encrypted partition:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="ex">cryptsetup</span> luksFormat /dev/sda3</a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="ex">cryptsetup</span> luksOpen /dev/sda3 enc-pv</a></code></pre></div>
+<p>OK, great! Time to make space for <code>/</code> and the swap:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1"><span class="ex">pvcreate</span> /dev/mapper/enc-pv</a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="ex">vgcreate</span> vg /dev/mapper/enc-pv</a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="ex">lvcreate</span> -n swap vg -L 8G</a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="ex">lvcreate</span> -n root vg -l 100%FREE</a></code></pre></div>
+<p>and to format:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" title="1"><span class="ex">mkfs.vfat</span> -n BOOT /dev/sda2</a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="ex">mkfs.ext4</span> -L root /dev/vg/root</a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="ex">mkswap</span> -L swap /dev/vg/swap</a></code></pre></div>
+<p>At this point, launching <code>fdisk -l</code> you will see the following output (or at least I do!):</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" title="1"><span class="ex">Disk</span> /dev/sda: 238.5 GiB, 256060514304 bytes, 500118192 sectors</a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="ex">Units</span>: sectors of 1 * 512 = 512 bytes</a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="ex">Sector</span> size (logical/physical)<span class="bu">:</span> 512 bytes / 512 bytes</a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="ex">I/O</span> size (minimum/optimal)<span class="bu">:</span> 512 bytes / 512 bytes</a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="ex">Disklabel</span> type: gpt</a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="ex">Disk</span> identifier: C57FCAC2-37B1-4E17-B70F-D1BE189BB48F</a>
+<a class="sourceLine" id="cb9-7" title="7"></a>
+<a class="sourceLine" id="cb9-8" title="8"><span class="ex">Device</span>       Start       End   Sectors  Size Type</a>
+<a class="sourceLine" id="cb9-9" title="9"><span class="ex">/dev/sda1</span>     2048      4047      2000 1000K BIOS boot</a>
+<a class="sourceLine" id="cb9-10" title="10"><span class="ex">/dev/sda2</span>     4096   1028095   1024000  500M EFI System</a>
+<a class="sourceLine" id="cb9-11" title="11"><span class="ex">/dev/sda3</span>  1028096 500118158 499090063  238G Linux LVM</a>
+<a class="sourceLine" id="cb9-12" title="12"></a>
+<a class="sourceLine" id="cb9-13" title="13"></a>
+<a class="sourceLine" id="cb9-14" title="14"><span class="ex">Disk</span> /dev/mapper/root: 238 GiB, 255532015104 bytes, 499085967 sectors</a>
+<a class="sourceLine" id="cb9-15" title="15"><span class="ex">Units</span>: sectors of 1 * 512 = 512 bytes</a>
+<a class="sourceLine" id="cb9-16" title="16"><span class="ex">Sector</span> size (logical/physical)<span class="bu">:</span> 512 bytes / 512 bytes</a>
+<a class="sourceLine" id="cb9-17" title="17"><span class="ex">I/O</span> size (minimum/optimal)<span class="bu">:</span> 512 bytes / 512 bytes</a>
+<a class="sourceLine" id="cb9-18" title="18"></a>
+<a class="sourceLine" id="cb9-19" title="19"></a>
+<a class="sourceLine" id="cb9-20" title="20"><span class="ex">Disk</span> /dev/mapper/vg-swap: 8 GiB, 8589934592 bytes, 16777216 sectors</a>
+<a class="sourceLine" id="cb9-21" title="21"><span class="ex">Units</span>: sectors of 1 * 512 = 512 bytes</a>
+<a class="sourceLine" id="cb9-22" title="22"><span class="ex">Sector</span> size (logical/physical)<span class="bu">:</span> 512 bytes / 512 bytes</a>
+<a class="sourceLine" id="cb9-23" title="23"><span class="ex">I/O</span> size (minimum/optimal)<span class="bu">:</span> 512 bytes / 512 bytes</a>
+<a class="sourceLine" id="cb9-24" title="24"></a>
+<a class="sourceLine" id="cb9-25" title="25"></a>
+<a class="sourceLine" id="cb9-26" title="26"><span class="ex">Disk</span> /dev/mapper/vg-root: 230 GiB, 246939648000 bytes, 482304000 sectors</a>
+<a class="sourceLine" id="cb9-27" title="27"><span class="ex">Units</span>: sectors of 1 * 512 = 512 bytes</a>
+<a class="sourceLine" id="cb9-28" title="28"><span class="ex">Sector</span> size (logical/physical)<span class="bu">:</span> 512 bytes / 512 bytes</a>
+<a class="sourceLine" id="cb9-29" title="29"><span class="ex">I/O</span> size (minimum/optimal)<span class="bu">:</span> 512 bytes / 512 bytes</a></code></pre></div>
+<h4 id="get-the-installation-going">Get the installation going!</h4>
+<p>Let’s mount the disks and volumes to <code>/mnt</code>:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" title="1"><span class="fu">mount</span> /dev/vg/root /mnt</a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="fu">mkdir</span> /mnt/boot</a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="fu">mount</span> /dev/sda2 /mnt/boot</a></code></pre></div>
+<p>and activate the swap:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1"><span class="ex">swapon</span> /dev/vg/swap</a></code></pre></div>
+<p>NixOS <em>declaratively</em> defines the configuration of the system. The starting point is to run the following:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" title="1"><span class="ex">nixos-generate-config</span> --root /mnt</a></code></pre></div>
+<p>that generates <code>hardware-configuration.nix</code> (<strong>do not touch</strong>) and <code>configuration.nix</code> in the directory <code>/mnt/etc/nixos</code>. My <code>configuration.nix</code> is available on <a href="https://github.com/robertodr/nixos-configuration">GitHub</a> and I can just clone the repo with and populate the <code>/mnt/etc/nixos</code> directory with the contents of the repo. This will not only configure the system as I like, but also install all the software that I need in one go. Once the <code>configuration.nix</code> is all set run:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" title="1"><span class="ex">nixos-install</span></a></code></pre></div>
+<p>and reboot when the process is done.</p>
+<h4 id="first-login">First login</h4>
+<p>Login as root user when the system reboots and add the 17.03 channel:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" title="1"><span class="ex">nix-channel</span> --add http://nixos.org/channels/nixos-17.03</a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="ex">nix-channel</span> --update</a></code></pre></div>
+<p>Add whatever you need to <code>configuration.nix</code> and rebuild your system:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" title="1"><span class="ex">nixos-reduild</span> switch</a></code></pre></div>
+<p>Moreover, the user that was created in the <code>configuration.nix</code> file does not have a password set! Let’s do it now:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" title="1"><span class="fu">passwd</span> roberto</a></code></pre></div>
+<p>You can now login as a normal user, instead as root. The system is now ready for use!</p>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Thanks to <a href="bast.fr">Radovan Bast</a> for the tip.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+</ol>
+</section>]]></description>
+    <pubDate>Tue, 11 Jul 2017 00:00:00 UT</pubDate>
+    <guid>totaltrash.xyz/blog/install-nixos.html</guid>
+    <dc:creator>Roberto Di Remigio</dc:creator>
+</item>
+<item>
+    <title>Turn On Compiler Warnings!</title>
+    <link>totaltrash.xyz/blog/turn-on-compiler-warnings.html</link>
+    <description><![CDATA[<div id='false_toc'>
+    <h2>Contents</h2>
+  <ul>
+  <li><a href="#an-example-from-the-cnpy-library">An example from the <span><code>cnpy</code> library</span></a></li>
+  <li><a href="#runtime-error">Runtime error!</a></li>
+  <li><a href="#fixing-it">Fixing it</a></li>
+  </ul>
+  </div>
+<p>{% include toc %}</p>
+<p><em>This post originally appeared on <a href="https://dev-cafe.github.io/2017/06/04/turn-on-compiler-warnings/">DevCafe</a></em></p>
+<p>Compiler warnings can be a nuisance, clogging the output with unnecessarily verbose information. This is especially true of C++, even more so when the code uses template magic. However, turning them off can be rather harmful.</p>
+<p><strong>TL;DR</strong></p>
+<p>Set <code>-Wall -Wextra</code>, or equivalent, as your basic compiler flags, both in debug and in release mode. If you are using CMake, the <a href="http://autocmake.readthedocs.io/en/latest/">Autocmake project</a> does it <a href="https://github.com/coderefinery/autocmake/pull/203">by default</a></p>
+<h3 id="an-example-from-the-cnpy-library">An example from the <a href="https://github.com/robertodr/cnpy"><code>cnpy</code> library</a></h3>
+<p>Consider the following C++11 example, but it applies equally well to earlier standards. The <a href="https://github.com/robertodr/cnpy"><code>cnpy</code> library</a> for saving/loading C++ arrays to/from NumPy binary format has a basic data structure, called <code>NpyArray</code>. An object of this type is constructed by supplying:</p>
+<ul>
+<li>the shape of the array, i.e. a <code>std::vector&lt;size_t&gt;</code>. For example, a 2-dimensional array with dimensions 10 and 11 will have: <code>std::vector&lt;size_t&gt; shape({10, 11});</code></li>
+<li>the <em>word size</em> of the data type to be dumped to NumPy array. This is either read from the <code>.npy</code> when loading the array, or determined by the result of <code>sizeof(T)</code>, where <code>T</code> is the data type, when saving the array.</li>
+</ul>
+<p>The constructor will then compute how large a memory buffer is needed and allocate a <code>std::vector&lt;char&gt;</code>. The number of values in the array is computed from the shape array:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c++"><code class="sourceCode cpp"><a class="sourceLine" id="cb1-1" title="1"><span class="dt">size_t</span> nValues = <span class="dv">1</span>;</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="cf">for</span> (<span class="dt">size_t</span> i = <span class="dv">0</span>; i &lt; shape.size(); ++i)</a>
+<a class="sourceLine" id="cb1-3" title="3">  nValues *= shape[i];</a></code></pre></div>
+<p>or more compactly using <code>std::accumulate</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c++"><code class="sourceCode cpp"><a class="sourceLine" id="cb2-1" title="1">nValues = <span class="bu">std::</span>accumulate(shape.begin(), shape.end(),</a>
+<a class="sourceLine" id="cb2-2" title="2">                          <span class="dv">1</span>, <span class="bu">std::</span>multiplies&lt;<span class="dt">size_t</span>&gt;());</a></code></pre></div>
+<p>The type information is encoded in the <code>.npy</code> file format header. When loading the array the user will have to perform a <code>reinterpret_cast</code> to get the correct data type.</p>
+<h3 id="runtime-error">Runtime error!</h3>
+<p>Stripped to its barebones, the <code>NpyArray</code> class looks like this:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c++"><code class="sourceCode cpp"><a class="sourceLine" id="cb3-1" title="1"><span class="pp">#include </span><span class="im">&lt;algorithm&gt;</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="pp">#include </span><span class="im">&lt;cassert&gt;</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="pp">#include </span><span class="im">&lt;numeric&gt;</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></a>
+<a class="sourceLine" id="cb3-6" title="6"></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="kw">struct</span> VectorWtf</a>
+<a class="sourceLine" id="cb3-8" title="8">{</a>
+<a class="sourceLine" id="cb3-9" title="9">  VectorWtf(<span class="at">const</span> <span class="bu">std::</span>vector&lt;<span class="dt">size_t</span>&gt; &amp; s, <span class="dt">size_t</span> w) :</a>
+<a class="sourceLine" id="cb3-10" title="10">    <span class="va">nValues_</span>(<span class="bu">std::</span>accumulate(s.begin(),</a>
+<a class="sourceLine" id="cb3-11" title="11">                                 s.end(),</a>
+<a class="sourceLine" id="cb3-12" title="12">                                 <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb3-13" title="13">                                 <span class="bu">std::</span>multiplies&lt;<span class="dt">size_t</span>&gt;())),</a>
+<a class="sourceLine" id="cb3-14" title="14">    <span class="va">buffer_</span>(<span class="va">nValues_</span> * w, <span class="dt">char</span>(<span class="dv">0</span>)) {</a>
+<a class="sourceLine" id="cb3-15" title="15">      <span class="bu">std::</span>cout &lt;&lt; <span class="st">&quot;nValues_ &quot;</span> &lt;&lt; <span class="va">nValues_</span> &lt;&lt; <span class="bu">std::</span>endl;</a>
+<a class="sourceLine" id="cb3-16" title="16">      <span class="bu">std::</span>cout &lt;&lt; <span class="st">&quot;w &quot;</span> &lt;&lt; w &lt;&lt; <span class="bu">std::</span>endl;</a>
+<a class="sourceLine" id="cb3-17" title="17">      <span class="bu">std::</span>cout &lt;&lt; <span class="st">&quot;nValues_ * w &quot;</span> &lt;&lt; <span class="va">nValues_</span> * w &lt;&lt; <span class="bu">std::</span>endl;</a>
+<a class="sourceLine" id="cb3-18" title="18">      <span class="ot">assert</span>(<span class="va">buffer_</span>.size() == <span class="va">nValues_</span> * w);</a>
+<a class="sourceLine" id="cb3-19" title="19">      <span class="cf">for</span> (<span class="dt">size_t</span> i = <span class="dv">0</span>; i &lt; <span class="va">nValues_</span> * w; ++i) {</a>
+<a class="sourceLine" id="cb3-20" title="20">        <span class="bu">std::</span>cout &lt;&lt; <span class="va">buffer_</span>[i] &lt;&lt; <span class="bu">std::</span>endl;</a>
+<a class="sourceLine" id="cb3-21" title="21">      }</a>
+<a class="sourceLine" id="cb3-22" title="22">      <span class="bu">std::</span>cout &lt;&lt; <span class="st">&quot;buffer_.size() &quot;</span> &lt;&lt; <span class="va">buffer_</span>.size() &lt;&lt; <span class="bu">std::</span>endl;</a>
+<a class="sourceLine" id="cb3-23" title="23">  }</a>
+<a class="sourceLine" id="cb3-24" title="24"></a>
+<a class="sourceLine" id="cb3-25" title="25">  <span class="bu">std::</span>vector&lt;<span class="dt">char</span>&gt; <span class="va">buffer_</span>;</a>
+<a class="sourceLine" id="cb3-26" title="26">  <span class="dt">size_t</span> <span class="va">nValues_</span>;</a>
+<a class="sourceLine" id="cb3-27" title="27">};</a>
+<a class="sourceLine" id="cb3-28" title="28"></a>
+<a class="sourceLine" id="cb3-29" title="29"><span class="dt">int</span> main()</a>
+<a class="sourceLine" id="cb3-30" title="30">{</a>
+<a class="sourceLine" id="cb3-31" title="31">  <span class="bu">std::</span>vector&lt;<span class="dt">size_t</span>&gt; shape({<span class="dv">10</span>, <span class="dv">11</span>});</a>
+<a class="sourceLine" id="cb3-32" title="32">  <span class="dt">size_t</span> w = <span class="dv">16</span>;</a>
+<a class="sourceLine" id="cb3-33" title="33"></a>
+<a class="sourceLine" id="cb3-34" title="34">  VectorWtf(shape, w);</a>
+<a class="sourceLine" id="cb3-35" title="35"></a>
+<a class="sourceLine" id="cb3-36" title="36">  <span class="cf">return</span> <span class="dv">0</span>;</a>
+<a class="sourceLine" id="cb3-37" title="37">}</a></code></pre></div>
+<p>Let’s now try to compile it:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="ex">g++</span> -std=c++11 -O0 main.cpp <span class="kw">&amp;&amp;</span> <span class="ex">./a.out</span></a></code></pre></div>
+<p>The live example on <a href="http://coliru.stacked-crooked.com/a/bcf64023319e2f5e">Coliru</a> shows that we get a runtime error because the assertion in the constructor fails.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="ex">nValues_</span> 110</a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="fu">w</span> 16</a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="ex">nValues_</span> * w 1760</a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="ex">a.out</span>: main.cpp:18: VectorWtf::VectorWtf(const std::vector<span class="op">&lt;</span>long unsigned int<span class="op">&gt;</span><span class="kw">&amp;</span>, <span class="ex">size_t</span>)<span class="bu">:</span> Assertion <span class="kw">`</span><span class="ex">buffer_.size</span>() == <span class="ex">nValues_</span> * w<span class="st">&#39; failed.</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="st">bash: line 7: 13432 Aborted                 (core dumped) ./a.out</span></a></code></pre></div>
+<p>What’s happening? Well, a very, very stupid mistake. <strong>The <code>buffer_</code> data member is initialized using the <code>nValues_</code> data member</strong> This shouldn’t be a problem, since it’s <strong>initialized first</strong> in the constructor, right? Wrong! <a href="http://open-std.org/JTC1/SC22/WG21/docs/papers/2016/n4594.pdf">According to the standard, 12.6.2 Section 13.3</a> data members are initialized in the order they were declared in the class. Thus <code>buffer_</code> gets initialized first, using an undefined value for <code>nValues_</code>.</p>
+<h3 id="fixing-it">Fixing it</h3>
+<p>The <strong>correct</strong> <code>struct</code> declaration is thus:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c++"><code class="sourceCode cpp"><a class="sourceLine" id="cb6-1" title="1"><span class="pp">#include </span><span class="im">&lt;algorithm&gt;</span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="pp">#include </span><span class="im">&lt;cassert&gt;</span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="pp">#include </span><span class="im">&lt;numeric&gt;</span></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></a>
+<a class="sourceLine" id="cb6-6" title="6"></a>
+<a class="sourceLine" id="cb6-7" title="7"><span class="kw">struct</span> VectorWtf</a>
+<a class="sourceLine" id="cb6-8" title="8">{</a>
+<a class="sourceLine" id="cb6-9" title="9">  VectorWtf(<span class="at">const</span> <span class="bu">std::</span>vector&lt;<span class="dt">size_t</span>&gt; &amp; s, <span class="dt">size_t</span> w) :</a>
+<a class="sourceLine" id="cb6-10" title="10">    <span class="va">nValues_</span>(<span class="bu">std::</span>accumulate(s.begin(),</a>
+<a class="sourceLine" id="cb6-11" title="11">                                 s.end(),</a>
+<a class="sourceLine" id="cb6-12" title="12">                                 <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb6-13" title="13">                                 <span class="bu">std::</span>multiplies&lt;<span class="dt">size_t</span>&gt;())),</a>
+<a class="sourceLine" id="cb6-14" title="14">    <span class="va">buffer_</span>(<span class="va">nValues_</span> * w, <span class="dt">char</span>(<span class="dv">0</span>)) {</a>
+<a class="sourceLine" id="cb6-15" title="15">      <span class="bu">std::</span>cout &lt;&lt; <span class="st">&quot;nValues_ &quot;</span> &lt;&lt; <span class="va">nValues_</span> &lt;&lt; <span class="bu">std::</span>endl;</a>
+<a class="sourceLine" id="cb6-16" title="16">      <span class="bu">std::</span>cout &lt;&lt; <span class="st">&quot;w &quot;</span> &lt;&lt; w &lt;&lt; <span class="bu">std::</span>endl;</a>
+<a class="sourceLine" id="cb6-17" title="17">      <span class="bu">std::</span>cout &lt;&lt; <span class="st">&quot;nValues_ * w &quot;</span> &lt;&lt; <span class="va">nValues_</span> * w &lt;&lt; <span class="bu">std::</span>endl;</a>
+<a class="sourceLine" id="cb6-18" title="18">      <span class="ot">assert</span>(<span class="va">buffer_</span>.size() == <span class="va">nValues_</span> * w);</a>
+<a class="sourceLine" id="cb6-19" title="19">      <span class="cf">for</span> (<span class="dt">size_t</span> i = <span class="dv">0</span>; i &lt; <span class="va">nValues_</span> * w; ++i) {</a>
+<a class="sourceLine" id="cb6-20" title="20">        <span class="bu">std::</span>cout &lt;&lt; <span class="va">buffer_</span>[i] &lt;&lt; <span class="bu">std::</span>endl;</a>
+<a class="sourceLine" id="cb6-21" title="21">      }</a>
+<a class="sourceLine" id="cb6-22" title="22">      <span class="bu">std::</span>cout &lt;&lt; <span class="st">&quot;buffer_.size() &quot;</span> &lt;&lt; <span class="va">buffer_</span>.size() &lt;&lt; <span class="bu">std::</span>endl;</a>
+<a class="sourceLine" id="cb6-23" title="23">  }</a>
+<a class="sourceLine" id="cb6-24" title="24"></a>
+<a class="sourceLine" id="cb6-25" title="25">  <span class="dt">size_t</span> <span class="va">nValues_</span>;</a>
+<a class="sourceLine" id="cb6-26" title="26">  <span class="bu">std::</span>vector&lt;<span class="dt">char</span>&gt; <span class="va">buffer_</span>;</a>
+<a class="sourceLine" id="cb6-27" title="27">};</a>
+<a class="sourceLine" id="cb6-28" title="28"></a>
+<a class="sourceLine" id="cb6-29" title="29"><span class="dt">int</span> main()</a>
+<a class="sourceLine" id="cb6-30" title="30">{</a>
+<a class="sourceLine" id="cb6-31" title="31">  <span class="bu">std::</span>vector&lt;<span class="dt">size_t</span>&gt; shape({<span class="dv">10</span>, <span class="dv">11</span>});</a>
+<a class="sourceLine" id="cb6-32" title="32">  <span class="dt">size_t</span> w = <span class="dv">16</span>;</a>
+<a class="sourceLine" id="cb6-33" title="33"></a>
+<a class="sourceLine" id="cb6-34" title="34">  VectorWtf(shape, w);</a>
+<a class="sourceLine" id="cb6-35" title="35"></a>
+<a class="sourceLine" id="cb6-36" title="36">  <span class="cf">return</span> <span class="dv">0</span>;</a>
+<a class="sourceLine" id="cb6-37" title="37">}</a></code></pre></div>
+<p>which also honors the tenet of ordering data members in your classes and structs by their size in memory. However, this is something very easily forgotten. How to avoid these kinds of errors?</p>
+<ol type="1">
+<li><strong>Do not initialize data members based on other data members</strong>. This is, in my opinion, overly restrictive.</li>
+<li><strong>Insert assertions in the constructors</strong>. Very useful, but assertions only work when <code>-DNDEBUG</code> is not given to the compiler. Most of the times this is not the case when compiling with optimization.</li>
+<li><strong>Turn on compiler warnings</strong>. <code>-Wall</code> catches this mistake and many others. For an extra layer of warnings, I also turn on <code>-Wextra</code>. This is the <a href="http://coliru.stacked-crooked.com/a/8eecbafde77f1d23">output on Coliru</a></li>
+</ol>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1"><span class="ex">main.cpp</span>: In constructor <span class="st">&#39;VectorWtf::VectorWtf(const std::vector&lt;long unsigned int&gt;&amp;, size_t)&#39;</span>:</a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="ex">main.cpp</span>:27:10: warning: <span class="st">&#39;VectorWtf::nValues_&#39;</span> will be initialized after [-Wreorder]</a>
+<a class="sourceLine" id="cb7-3" title="3">   <span class="ex">size_t</span> nValues_<span class="kw">;</span></a>
+<a class="sourceLine" id="cb7-4" title="4">          ^<span class="ex">~~~~~~~</span></a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="ex">main.cpp</span>:26:21: warning:   <span class="st">&#39;std::vector&lt;char&gt; VectorWtf::buffer_&#39;</span> [-Wreorder]</a>
+<a class="sourceLine" id="cb7-6" title="6">   <span class="ex">std</span>::vector<span class="op">&lt;</span>char<span class="op">&gt;</span> buffer_<span class="kw">;</span></a>
+<a class="sourceLine" id="cb7-7" title="7">                     ^<span class="ex">~~~~~~</span></a>
+<a class="sourceLine" id="cb7-8" title="8"><span class="ex">main.cpp</span>:9:3: warning:   when initialized here [-Wreorder]</a>
+<a class="sourceLine" id="cb7-9" title="9">   <span class="ex">VectorWtf</span>(const std::vector<span class="op">&lt;</span>size_t<span class="op">&gt;</span> <span class="kw">&amp;</span> <span class="ex">s</span>, size_t w) <span class="bu">:</span></a>
+<a class="sourceLine" id="cb7-10" title="10">   ^<span class="ex">~~~~~~~~</span></a></code></pre></div>]]></description>
+    <pubDate>Sat, 08 Jul 2017 00:00:00 UT</pubDate>
+    <guid>totaltrash.xyz/blog/turn-on-compiler-warnings.html</guid>
+    <dc:creator>Roberto Di Remigio</dc:creator>
+</item>
+<item>
+    <title>Turn On Compiler Warnings!</title>
+    <link>totaltrash.xyz/blog/turn-on-compiler-warnings.html</link>
+    <description><![CDATA[<div id='false_toc'>
+  </div>
+]]></description>
+    <pubDate>Sun, 04 Jun 2017 00:00:00 UT</pubDate>
+    <guid>totaltrash.xyz/blog/turn-on-compiler-warnings.html</guid>
+    <dc:creator>Roberto Di Remigio</dc:creator>
+</item>
+<item>
+    <title>Song of the Week, 10</title>
+    <link>totaltrash.xyz/blog/sow10_2017.html</link>
+    <description><![CDATA[<div id='false_toc'>
+  </div>
+<p>I found this out listening to a <a href="https://www.mixcloud.com/TheVinylFactory/vf-mix-08-elijah-wood-zach-cowie-aka-wooden-wisdom/">podcast</a> on <a href="https://www.mixcloud.com">MixCloud</a>. The podcast was put together by DJ Wooden Wisdom (Elijah Wood &amp; Zach Cowie) for <a href="http://thevinylfactory.com/">The Vinyl Factory</a>. Here is the <a href="http://thevinylfactory.com/features/listen-to-an-exclusive-elijah-wood-zach-cowie-aka-wooden-wisdom-vinyl-only-mix/">tracklist</a>.</p>
+<p><a href="https://youtu.be/8JGohtIFM_Q" title="The Greatest Name That Lives"><img src="../images/videos/youtube-the_greatest_name_that_lives.jpg" alt="The Greatest Name That Lives" /></a></p>]]></description>
+    <pubDate>Fri, 10 Mar 2017 00:00:00 UT</pubDate>
+    <guid>totaltrash.xyz/blog/sow10_2017.html</guid>
+    <dc:creator>Roberto Di Remigio</dc:creator>
+</item>
+<item>
+    <title>Branching Models</title>
+    <link>totaltrash.xyz/blog/branching-models.html</link>
+    <description><![CDATA[<div id='false_toc'>
+  </div>
+]]></description>
+    <pubDate>Wed, 01 Mar 2017 00:00:00 UT</pubDate>
+    <guid>totaltrash.xyz/blog/branching-models.html</guid>
+    <dc:creator>Roberto Di Remigio</dc:creator>
+</item>
+<item>
+    <title>Song of the Week, 21</title>
+    <link>totaltrash.xyz/blog/sow21_2016.html</link>
+    <description><![CDATA[<div id='false_toc'>
+  </div>
+<p><a href="https://youtu.be/HxPWQsF_ixo" title="Lethal Musk"><img src="../images/videos/youtube-lethal_musk.jpg" alt="Lethal Musk" /></a></p>]]></description>
+    <pubDate>Fri, 27 May 2016 00:00:00 UT</pubDate>
+    <guid>totaltrash.xyz/blog/sow21_2016.html</guid>
+    <dc:creator>Roberto Di Remigio</dc:creator>
+</item>
+<item>
+    <title>Song of the Week, 20</title>
+    <link>totaltrash.xyz/blog/sow20_2016.html</link>
+    <description><![CDATA[<div id='false_toc'>
+  </div>
+<p><a href="https://youtu.be/JEJpmDUMKco" title="Leave Me Alone"><img src="../images/videos/youtube-leave_me_alone.jpg" alt="Leave Me ALone" /></a></p>]]></description>
+    <pubDate>Thu, 19 May 2016 00:00:00 UT</pubDate>
+    <guid>totaltrash.xyz/blog/sow20_2016.html</guid>
+    <dc:creator>Roberto Di Remigio</dc:creator>
+</item>
+<item>
+    <title>Welcome</title>
+    <link>totaltrash.xyz/blog/welcome.html</link>
+    <description><![CDATA[<div id='false_toc'>
+  </div>
+<p><a href="https://youtu.be/3dknzzBkX7U" title="Total Trash"><img src="../images/videos/youtube-total_trash.jpg" alt="Total Trash" /></a></p>]]></description>
+    <pubDate>Wed, 27 Apr 2016 00:00:00 UT</pubDate>
+    <guid>totaltrash.xyz/blog/welcome.html</guid>
+    <dc:creator>Roberto Di Remigio</dc:creator>
+</item>
+
+    </channel>
+</rss>

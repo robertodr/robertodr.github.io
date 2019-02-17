@@ -1,0 +1,156 @@
+html {
+  line-height: 1.5;
+  color: #424242;
+  font-family: 'Alegreya', serif;
+  font-size: large;
+  padding: 2rem; }
+
+h1, h2, h3, h4, h5 {
+  font-family: Nunito, sans-serif;
+  margin-top: 0; }
+
+a {
+  color: black;
+  text-decoration-style: dashed;
+  text-underline-position: under; }
+
+figure {
+  margin: 0; }
+
+figcaption {
+  text-align: center;
+  color: #555;
+  font-family: sans-serif;
+  font-size: small; }
+
+img {
+  max-width: 100%; }
+
+.blog-date {
+  color: #666;
+  font-size: small;
+  padding-right: 0.5rem;
+  font-family: Nunito, sans-serif; }
+
+.abstract-head {
+  font-family: Nunito, sans-serif;
+  padding-right: 0.8rem; }
+
+.abstract {
+  padding-bottom: 1rem; }
+
+.blog-list {
+  list-style-type: none; }
+
+main aside {
+  display: none; }
+
+main article {
+  width: 100%; }
+  main article nav {
+    padding-bottom: 1rem; }
+  main article p {
+    margin-top: 0; }
+
+main h1 {
+  font-size: 1.8rem; }
+
+@media (min-width: 1280px) {
+  main {
+    display: flex; }
+    main article {
+      width: 750px;
+      margin-right: 1rem; }
+      main article p, main article ul, main article ol {
+        padding-right: 2.5rem;
+        padding-left: 2.5rem; }
+      main article ul {
+        list-style-type: circle; }
+      main article h1 {
+        display: none; }
+    main aside {
+      display: block;
+      width: 450px;
+      margin-left: 1rem; } }
+
+td.hljs-ln-numbers {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  text-align: right;
+  color: #ccc;
+  width: 1rem;
+  border-right: 1px solid #ccc;
+  vertical-align: middle;
+  padding-right: 0.5rem;
+  font-size: small; }
+
+td.hljs-ln-code {
+  padding-left: 0.5rem; }
+
+td.hljs-ln-code {
+  padding-left: 0.5rem; }
+
+pre, code {
+  background: #f8f8f8;
+  font-family: 'Fira Code', monospace;
+  font-size: medium; }
+
+code {
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  color: #424242; }
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5rem;
+  color: #424242;
+  background: #f8f8f8; }
+
+.hljs-meta {
+  font-weight: bold; }
+
+.hljs-comment,
+.hljs-meta,
+.hljs-quote {
+  color: #8959a8; }
+
+.hljs-strong,
+.hljs-string {
+  font-weight: bold; }
+
+.hljs-emphasis {
+  font-style: italic; }
+
+.hljs-deletion {
+  color: #BF616A; }
+
+.hljs-addition {
+  color: #A3BE8C; }
+
+footer {
+  font-size: medium; }
+
+hr {
+  overflow: visible;
+  padding: 0;
+  border: none;
+  border-top: medium double #999;
+  color: #999;
+  text-align: center; }
+
+.footnotes p {
+  padding: 0; }
+
+.footnote-back {
+  margin-left: 0.3rem; }
+
+/* A hack to improve forkawesome lists... */
+.fa-li {
+  top: .3em; }
