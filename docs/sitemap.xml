@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>https://totaltrash.xyz/</loc>
+  <lastmod>2019-02-17T20:30:27+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://totaltrash.xyz/blog/the-n-th-time-is-the-charm.html</loc>
+  <lastmod>2019-02-17T20:30:27+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://totaltrash.xyz/blog/install-nixos.html</loc>
+  <lastmod>2019-02-17T20:30:27+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://totaltrash.xyz/blog/turn-on-compiler-warnings.html</loc>
+  <lastmod>2019-02-17T20:30:27+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://totaltrash.xyz/blog/sow10_2017.html</loc>
+  <lastmod>2019-02-17T20:30:27+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://totaltrash.xyz/blog/sow21_2016.html</loc>
+  <lastmod>2019-02-17T20:30:27+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://totaltrash.xyz/blog/sow20_2016.html</loc>
+  <lastmod>2019-02-17T20:30:27+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://totaltrash.xyz/blog/welcome.html</loc>
+  <lastmod>2019-02-17T20:30:27+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+
+
+</urlset>

@@ -1,2 +1,3 @@
 User-agent: *
 Disallow:
+Sitemap: https://totaltrash.xyz/sitemap.xml
