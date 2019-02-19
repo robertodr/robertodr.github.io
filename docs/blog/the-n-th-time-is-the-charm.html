@@ -44,7 +44,25 @@
   </div>
 <p>What do you know?</p>
 <p><span class="math display">\[ \ln x = \int_{-\infty}^x \frac 1 y \, dy  \]</span></p>
+<p>With plots:</p>
+<pre data-plot_target="my_figure.svg" data-plot_alt="This is a simple figure"><code>import matplotlib.pyplot as plt
+
+plt.figure()
+plt.plot([0,1,2,3,4], [1,2,3,4,5])
+plt.title('This is an example figure')</code></pre>
 <p>And references even!<span class="citation" data-cites="Thom2010-kh"><sup><a href="#ref-Thom2010-kh">1</a></sup></span></p>
+<p>TODOs:</p>
+<ul>
+<li>Read the Pijul SHA to generate the footer correctly. It is probably possible to adapt this: <a href="https://github.com/snoyberg/githash">githash</a></li>
+<li>Refurbish the template to include links to other platforms (Twitter <em>etc.</em>)</li>
+<li>Generate CV as PDF and HTML</li>
+<li>Clean up the Haskell source, also looking at <a href="https://github.com/LaurentRDC/personal-website/blob/master/src/site.hs">this</a> The code is discussed <a href="http://www.physics.mcgill.ca/~decotret/about.html#about-this-site">here</a> I want to be able to combine with other compilers without triple somersaults:
+<ul>
+<li><a href="https://github.com/owickstrom/pandoc-include-code">pandoc-include-code</a></li>
+<li><a href="https://github.com/LaurentRDC/pandoc-pyplot">pandoc-pyplot</a></li>
+</ul></li>
+<li>Try to create a <code>pandoc-bokeh</code> filter based on <code>pandoc-pyplot</code>.</li>
+</ul>
 <h3 id="references" class="unnumbered">References</h3>
 <div id="refs" class="references">
 <div id="ref-Thom2010-kh">
