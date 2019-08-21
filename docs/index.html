@@ -12,14 +12,32 @@
     <script type="text/javascript" src="./vendor/highlight.line-numbers.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML" async></script>
      <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js" integrity="sha384-0pzryjIRos8mFBWMzSSZApWtPl/5++eIfzYmTgBBmXYdhvxPc+XcFEk+zJwDgWbP" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <script>
+      $(function(){
+        var includes = $('[data-include]');
+        jQuery.each(includes, function(){
+          var file = '/' + $(this).data('include') + '.html';
+          $(this).load(file);
+        });
+      });
+    </script>
     <link rel="stylesheet" href="./vendor/normalize.css" />
     <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/tachyons@4/css/tachyons.min.css">
     <title>
       totaltrash.xyz
       
       – Roberto
       
     </title>
+
+    <marquee direction="down" class="mw7" height="200" behavior="alternate" scrollamount="3">
+      <marquee behavior="alternate">
+        <big>UNDER CONSTRUCTION</big>
+      </marquee>
+    </marquee>
+
   </head>
   <body>
     <main>
@@ -27,6 +45,15 @@
         <h2>Here</h2>
 
 <ul class="blog-list">
+  
+  
+  <li>
+    <span class="blog-date">
+      2019-03-09
+    </span>
+    <a href="./blog/plots-with-altair.html">Plots with Altair</a>
+  </li>
+  
   
   
   <li>
@@ -108,6 +135,8 @@
 <h2>And there</h2>
 
 <ul class="blog-list">
+  
+  
   
   
   
