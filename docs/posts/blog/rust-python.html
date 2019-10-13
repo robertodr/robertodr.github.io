@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <meta name="referrer" content="no-referrer">
+    <link href="../../favicon.png" rel="shortcut icon">
+    <link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Fira+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <script type="text/javascript" src="../../vendor/highlight.pack.js"></script>
+    <script type="text/javascript" src="../../vendor/highlight.line-numbers.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML" async></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js" integrity="sha384-0pzryjIRos8mFBWMzSSZApWtPl/5++eIfzYmTgBBmXYdhvxPc+XcFEk+zJwDgWbP" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <script>
+      $(function(){
+        var includes = $('[data-include]');
+        jQuery.each(includes, function(){
+          var file = '/' + $(this).data('include') + '.html';
+          $(this).load(file);
+        });
+      });
+    </script>
+    <link rel="stylesheet" href="../../vendor/normalize.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/syntax.css" />
+    <link rel="stylesheet" href="https://unpkg.com/tachyons@4/css/tachyons.min.css">
+    <title>
+      totaltrash.xyz
+      
+      – Rust and Python
+      
+    </title>
+
+    <marquee direction="down" class="mw7" height="200" behavior="alternate" scrollamount="3">
+      <marquee behavior="alternate">
+          <big>totally revamped, still <strong style="color: red;">TOTAL</strong>ly <strong style="color: black;">TRASH</strong></big>
+      </marquee>
+    </marquee>
+
+  </head>
+  <body>
+    <main>
+      <article>
+        <h1>
+  Rust and Python
+</h1>
+
+<nav>
+  <a href="../../">
+    <i class="fa fa-chevron-left" style="font-size:0.7em"></i>
+    Go back to index
+  </a>
+</nav>
+
+<div>
+  <div id="false_toc">
+    <h2>Contents</h2>
+  <ul>
+  <li><a href="#development-environment">Development environment</a><ul>
+  <li><a href="#rust-dependencies">Rust dependencies</a></li>
+  <li><a href="#python-dependencies">Python dependencies</a></li>
+  </ul></li>
+  <li><a href="#workflow">Workflow</a></li>
+  <li><a href="#packaging-and-deployment">Packaging and deployment</a><ul>
+  <li><a href="#automated-deploy-to-pypi-with-travis-ci">Automated deploy to PyPI with Travis CI</a></li>
+  </ul></li>
+  <li><a href="#moving-forward">Moving forward</a></li>
+  <li><a href="#acknowledgments">Acknowledgments</a></li>
+  <li><a href="#references">References</a></li>
+  </ul>
+  </div>
+<p>I have lately been working on coupled cluster Monte Carlo.<span class="citation" data-cites="Scott2019-ge"><sup><a href="#ref-Scott2019-ge">1</a></sup></span> Our pilot code is pure Python: easy to write, but the performance is not optimal. We are thus in the process of rewriting the most computationally intensive parts of the code in a compiled language.</p>
+<p>Originally, that compiled language was going to be C++. <a href="https://pybind11.readthedocs.io/en/stable/">pybind11</a> indeed works perfectly for writing Python extensions. Then I learned about Rust and decided to try that instead:</p>
+<ol type="1">
+<li>I thought it would be a good idea to learn a new language;</li>
+<li>The memory safety guarantees and their potential benefits for parallel and concurrent programming are very enthusing;</li>
+<li>There is no runtime library apart from GLIBC;</li>
+<li>The tooling is excellent: unobtrusive and shipped with the language.</li>
+</ol>
+<p>Both Python and Rust can talk to C, so that’s ultimately what we’ll have to do to get our extension to work properly. Fortunately, we don’t have to go <em>all the way</em> to C. There are 2 tools that can help in writing Python extensions in Rust:</p>
+<ul>
+<li>Using <a href="https://cffi.readthedocs.io/en/latest/">CFFI</a>. Slightly lower level and it can involve a lot of boilerplate.</li>
+<li>Using <a href="https://github.com/PyO3/pyo3">PyO3</a>. Aims at doing what <a href="https://pybind11.readthedocs.io/en/stable/">pybind11</a> (and <a href="https://www.boost.org/doc/libs/1_71_0/libs/python/doc/html/index.html">Boost.Python</a> before it) did for C++ extensions. It is more bleeding edge and what I chose to work with.</li>
+</ul>
+<p><a href="https://pganssle-talks.github.io/europython-2019-rust-extensions/#/">This presentation</a> has more information on writing Python extensions in Rust.</p>
+<p><strong>In this post I’ll explain</strong>:</p>
+<ol type="a">
+<li>How to set up a mixed-language development environment.</li>
+<li>How to deploy a <a href="https://www.python.org/dev/peps/pep-0513/"><code>manylinux1</code></a>-compatible package using Travis CI for tagged releases.</li>
+</ol>
+<p>The public example repository in on GitHub: <a href="https://github.com/robertodr/rustafarian">robertodr/rustafarian</a>.</p>
+<h3 id="development-environment">Development environment</h3>
+<h4 id="rust-dependencies">Rust dependencies</h4>
+<p>These are for developers only. First and foremost, we need the Rust toolchain. <code>rustup</code> to the rescue!</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">curl</span> https://sh.rustup.rs -sSf <span class="kw">|</span> <span class="fu">sh</span> -s -- -y --no-modify-path --default-toolchain nightly</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="bu">source</span> <span class="st">&quot;</span><span class="va">$HOME</span><span class="st">&quot;</span>/.cargo/env</a></code></pre></div>
+<p>Other dependencies will be specified in the <code>Cargo.toml</code> file and installed when we build the extension.</p>
+<h4 id="python-dependencies">Python dependencies</h4>
+<p>These are both for final users (<em>e.g.</em>, <a href="https://click.palletsprojects.com/en/7.x/">Click</a> for the command-line interface) and for developers (<em>e.g.</em>, <a href="https://docs.pytest.org/en/latest/">pytest</a> for testing). Preferably one should only install Python dependencies in virtual environments, <strong>never globally</strong>. I am partial towards <a href="https://pipenv.kennethreitz.org/en/latest/">Pipenv</a>, but <a href="https://docs.conda.io/en/latest/">Conda</a> could work as well.</p>
+<p>Running <code>pipenv install --dev</code> with the following <code>Pipfile</code>:</p>
+<pre><code>[[source]]
+name = &quot;pypi&quot;
+url = &quot;https://pypi.org/simple&quot;
+verify_ssl = true
+
+[dev-packages]
+maturin = &quot;&gt;=0.7.6&quot;
+pytest = &quot;&gt;=4.0&quot;
+
+[packages]
+click = &quot;&gt;=7.0&quot;</code></pre>
+<p>will create the virtual environment and install all needed packages. With <code>pipenv shell</code>, you can jump in the virtual environment. The <a href="https://github.com/PyO3/maturin">maturin</a> package is <strong>essential</strong>: this is the tool that will orchestrate building the extension and packaging for PyPI.</p>
+<h3 id="workflow">Workflow</h3>
+<p>OK, now we have a working development environment! To build the extension:</p>
+<ol type="a">
+<li>Make sure that the Rust toolchain is on <code>PATH</code>:</li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1">$ <span class="bu">source</span> <span class="st">&quot;</span><span class="va">$HOME</span><span class="st">&quot;</span>/.cargo/env</a></code></pre></div>
+<ol start="2" type="a">
+<li>Make sure that you are in the Python virtual environment:</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1">$ <span class="ex">pipenv</span> shell</a></code></pre></div>
+<ol start="3" type="a">
+<li>Invoke the build tool:</li>
+</ol>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1">$ <span class="ex">maturin</span> develop</a></code></pre></div>
+<p>The <code>Cargo.toml</code> lists the Rust dependencies of our project and these will be automatically downloaded and compiled if not already available.</p>
+<p><strong>And DONE!</strong> <a href="https://github.com/PyO3/maturin">maturin</a> will compile the module and link it into a dynamic shared object (DSO) alongside the Python code:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1">$ <span class="ex">tree</span> rustafarian</a>
+<a class="sourceLine" id="cb6-2" title="2"></a>
+<a class="sourceLine" id="cb6-3" title="3">  <span class="ex">rustafarian/</span></a>
+<a class="sourceLine" id="cb6-4" title="4">  ├── <span class="ex">cli.py</span></a>
+<a class="sourceLine" id="cb6-5" title="5">  ├── <span class="ex">__init__.py</span></a>
+<a class="sourceLine" id="cb6-6" title="6">  ├── <span class="ex">module</span></a>
+<a class="sourceLine" id="cb6-7" title="7">  │   ├── <span class="ex">double.py</span></a>
+<a class="sourceLine" id="cb6-8" title="8">  │   ├── <span class="ex">__init__.py</span></a>
+<a class="sourceLine" id="cb6-9" title="9">  └── <span class="ex">rustafarian.cpython-37m-x86_64-linux-gnu.so</span></a></code></pre></div>
+<p>We can thus run tests with <code>pytest</code>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1">$ <span class="ex">pytest</span> -x -rws -vv tests/test_*</a></code></pre></div>
+<p>or import <code>rustafarian</code> and use it in an interactive Python session spawned in our development environment.</p>
+<p>Running <code>ldd</code> on the DSO shows that there is no Rust runtime to link to:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" title="1">$  <span class="fu">ldd</span> rustafarian/rustafarian.cpython-37m-x86_64-linux-gnu.so</a>
+<a class="sourceLine" id="cb8-2" title="2"></a>
+<a class="sourceLine" id="cb8-3" title="3">  <span class="ex">linux-vdso.so.1</span> (0x00007ffe979ac000)</a>
+<a class="sourceLine" id="cb8-4" title="4">  <span class="ex">libdl.so.2</span> =<span class="op">&gt;</span> /nix/store/681354n3k44r8z90m35hm8945vsp95h1-glibc-2.27/lib/libdl.so.2 (0x00007efd23df5000)</a>
+<a class="sourceLine" id="cb8-5" title="5">  <span class="ex">librt.so.1</span> =<span class="op">&gt;</span> /nix/store/681354n3k44r8z90m35hm8945vsp95h1-glibc-2.27/lib/librt.so.1 (0x00007efd23deb000)</a>
+<a class="sourceLine" id="cb8-6" title="6">  <span class="ex">libpthread.so.0</span> =<span class="op">&gt;</span> /nix/store/681354n3k44r8z90m35hm8945vsp95h1-glibc-2.27/lib/libpthread.so.0 (0x00007efd23dca000)</a>
+<a class="sourceLine" id="cb8-7" title="7">  <span class="ex">libgcc_s.so.1</span> =<span class="op">&gt;</span> /nix/store/681354n3k44r8z90m35hm8945vsp95h1-glibc-2.27/lib/libgcc_s.so.1 (0x00007efd23bb4000)</a>
+<a class="sourceLine" id="cb8-8" title="8">  <span class="ex">libc.so.6</span> =<span class="op">&gt;</span> /nix/store/681354n3k44r8z90m35hm8945vsp95h1-glibc-2.27/lib/libc.so.6 (0x00007efd239fe000)</a>
+<a class="sourceLine" id="cb8-9" title="9">  <span class="ex">/nix/store/681354n3k44r8z90m35hm8945vsp95h1-glibc-2.27/lib64/ld-linux-x86-64.so.2</span> (0x00007efd23e63000)</a></code></pre></div>
+<h3 id="packaging-and-deployment">Packaging and deployment</h3>
+<p>It is now time to distribute this little Rust+Python package by deploying it to PyPI. <a href="https://www.python.org/dev/peps/pep-0517/">PEP 517</a> introduced the <code>pyproject.toml</code> file to specify build systems for Python packages. Ours will specify <a href="https://github.com/PyO3/maturin">maturin</a> as our build tool and thus look like:</p>
+<pre class="toml"><code>[build-system]
+requires = [&quot;maturin&quot;]
+build-backend = &quot;maturin&quot;</code></pre>
+<p>As you can see, there is no mention of user dependencies (Click, in our case) in this file. Nor of console scripts to be installed alongside the module. This information is contained in the <code>Cargo.toml</code>:</p>
+<pre class="toml"><code>[package.metadata.maturin]
+requires-python = &quot;&gt;=3.6&quot;
+requires-dist = [&quot;click&gt;=7.0&quot;]
+scripts = {rustafarian = &quot;rustafarian.cli:cli&quot;}
+classifier = [&quot;Programming Language :: Python&quot;]</code></pre>
+<h4 id="automated-deploy-to-pypi-with-travis-ci">Automated deploy to PyPI with Travis CI</h4>
+<p><a href="https://github.com/PyO3/maturin">maturin</a> has a <code>publish</code> CLI switch to upload a package to PyPI. The process can be automatised: whenever a new tag is pushed to GitHub, Travis will run a CI job. If successful, it will deploy the artifact to PyPI:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb11-1" title="1"><span class="fu">deploy:</span></a>
+<a class="sourceLine" id="cb11-2" title="2">  <span class="fu">provider:</span><span class="at"> script</span></a>
+<a class="sourceLine" id="cb11-3" title="3">  <span class="fu">script:</span><span class="at"> </span><span class="st">&quot;.ci/deploy_to_pypi.sh&quot;</span></a>
+<a class="sourceLine" id="cb11-4" title="4">  <span class="fu">on:</span></a>
+<a class="sourceLine" id="cb11-5" title="5">    <span class="fu">python:</span><span class="at"> </span><span class="st">&quot;3.6&quot;</span></a>
+<a class="sourceLine" id="cb11-6" title="6">    <span class="fu">tags:</span><span class="at"> </span><span class="ch">true</span></a>
+<a class="sourceLine" id="cb11-7" title="7">    <span class="fu">repo:</span><span class="at"> robertodr/rustafarian</span></a></code></pre></div>
+<p>The deployment script contains the following:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" title="1"><span class="co">#!/usr/bin/env bash</span></a>
+<a class="sourceLine" id="cb12-2" title="2"></a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="co"># Use https://hub.docker.com/r/robertodr/maturin to deploy</span></a>
+<a class="sourceLine" id="cb12-4" title="4"></a>
+<a class="sourceLine" id="cb12-5" title="5"><span class="ex">docker</span> run \</a>
+<a class="sourceLine" id="cb12-6" title="6">       --env MATURIN_PASSWORD=<span class="st">&quot;</span><span class="va">$MATURIN_PASSWORD</span><span class="st">&quot;</span> \</a>
+<a class="sourceLine" id="cb12-7" title="7">       --rm \</a>
+<a class="sourceLine" id="cb12-8" title="8">       -v <span class="st">&quot;</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span><span class="st">&quot;</span>:/io \</a>
+<a class="sourceLine" id="cb12-9" title="9">       robertodr/maturin \</a>
+<a class="sourceLine" id="cb12-10" title="10">       publish \</a>
+<a class="sourceLine" id="cb12-11" title="11">       --interpreter python3.6 python3.7 \</a>
+<a class="sourceLine" id="cb12-12" title="12">       --username robertodr \</a>
+<a class="sourceLine" id="cb12-13" title="13">       --password <span class="st">&quot;</span><span class="va">$MATURIN_PASSWORD</span><span class="st">&quot;</span></a></code></pre></div>
+<p>where the <code>MATURIN_PASSWORD</code> is the password to the PyPI account and is encrypted <em>via</em> the Travis CI web UI. We are building in a Docker container to ensure compliance with the <a href="https://www.python.org/dev/peps/pep-0513/"><code>manylinux1</code></a> policy. The Docker image is derived from the official <code>manylinux1_x86_64</code> image and guarantees linkage to an ancient enough version of GLIBC. The <code>Dockerfile</code> for the image can be found in the example repository.</p>
+<h3 id="moving-forward">Moving forward</h3>
+<p>This post should get you started using the excellent <a href="https://github.com/PyO3/pyo3">PyO3</a> and <a href="https://github.com/PyO3/maturin">maturin</a> projects for your Rust+Python mixed-language programming.</p>
+<p>In <a href="nix-rust-python.html">an upcoming post</a>, I’ll explain how to automate the environment set up using <a href="https://direnv.net/">direnv</a> and pin dependencies using <a href="https://nixos.org/nix/">Nix</a>.</p>
+<h3 id="acknowledgments">Acknowledgments</h3>
+<p>Thanks for <a href="https://twitter.com/__radovan">@__radovan</a> for reading and commenting on an early draft.</p>
+<h3 id="references" class="unnumbered">References</h3>
+<div id="refs" class="references">
+<div id="ref-Scott2019-ge">
+<p>(1) Scott, C. J. C.; Di Remigio, R.; Crawford, T. D.; Thom, A. J. W. Diagrammatic Coupled Cluster Monte Carlo. <em>J. Phys. Chem. Lett.</em> <strong>2019</strong>, <em>10</em> (5), 925–935. <a href="https://doi.org/10.1021/acs.jpclett.9b00067">https://doi.org/10.1021/acs.jpclett.9b00067</a>.</p>
+</div>
+</div>
+</div>
+
+      </article>
+
+    <aside>
+      <h1>
+      Rust and Python
+      </h1>
+
+      <div class="abstract">
+        
+        <i class="fas fa-angle-double-right fa-3x fa-pull-left" aria-hidden="true"></i>
+        Getting set up to write, build, and deploy Python extensions written in Rust.
+        
+      </div>
+
+      <nav id="toc">
+      </nav>
+
+      <hr />
+
+      <p>
+          <div align="left">
+              <i class="fas fa-video-slash"></i> <a href="../../movies.html">Movies</a>
+          </div>
+          <div align="right">
+              <i class="fas fa-volume-mute"></i> <a href="../../music.html">Music</a>
+          </div>
+      </p>
+      <p>
+          <div align="left">
+              <i class="fas fa-book-dead"></i> <a href="../../books.html">Books</a>
+          </div>
+          <div align="right">
+              <i class="fas fa-toilet-paper"></i> <a href="../../fragments.html">Fragments</a>
+          </div>
+      </p>
+
+      <hr />
+
+      <ul class="fa-ul">
+          <li><span class="fa-li"><i class="fas fa-crow"></i></span>
+              The source of this website is available on the Pijul Nest <a href="https://nest.pijul.com/robertodr/totaltrash.xyz">under the
+              terms of the AGPLv3</a>. Found a mistake? <a href="mailto:roberto.diremigio@gmail.com">Shoot an email</a>! (with
+              <a href="https://man.sr.ht/git.sr.ht/send-email.md">a patch</a>
+              maybe?)
+          </li>
+      </ul>
+    </aside>
+    <aside>
+     <img src="../../images/me-by-ilsignorm.png" width="300px">
+     <marquee direction="down" class="mw7" height="200" behavior="alternate" scrollamount="3">
+         <marquee behavior="alternate">
+             <big>UNDER CONSTRUCTION</big>
+         </marquee>
+     </marquee>
+    </aside>
+    </main>
+
+    <footer>
+      <p>
+        <i class="fas fa-crow"></i>
+        <a href="https://nest.pijul.com/robertodr/totaltrash.xyz:master/patches/7txqLhkjW1fgepPutR3FdxMcJ1yiWzbaNYNoyfZoMXpKDBuvT5eWqM4GyXJRJ7cvdnehzp4KYDxYyJaWarrReBUv.gz
+">
+          @7txqLhk
+        </a>
+      </p>
+    </footer>
+
+    <script type="text/javascript">
+      // highlightjs
+     hljs.initHighlightingOnLoad();
+      hljs.initLineNumbersOnLoad({
+          singleLine: true
+      });
+
+      // add hint to remote links
+      window.onload =function() {
+        var links = document.links;
+        for (var i = 0, linksLength = links.length; i < linksLength; i++) {
+          if (links[i].hostname != window.location.hostname) {
+            links[i].innerHTML += ' <i class="fa fa-external-link-alt fa-sm" style="font-size:0.7em"></i>';
+          }
+        }
+      }
+
+      // deal with toc, the ugly way
+      var falseToc = document.getElementById('false_toc');
+
+      if (falseToc) {
+        document.getElementById('toc').innerHTML = falseToc.innerHTML;
+        falseToc.innerHTML = '';
+      }
+    </script>
+  </body>
+</html>
