@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <meta name="referrer" content="no-referrer">
+    <link href="../../favicon.png" rel="shortcut icon">
+    <link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Fira+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <script type="text/javascript" src="../../vendor/highlight.pack.js"></script>
+    <script type="text/javascript" src="../../vendor/highlight.line-numbers.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML" async></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js" integrity="sha384-0pzryjIRos8mFBWMzSSZApWtPl/5++eIfzYmTgBBmXYdhvxPc+XcFEk+zJwDgWbP" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <script>
+      $(function(){
+        var includes = $('[data-include]');
+        jQuery.each(includes, function(){
+          var file = '/' + $(this).data('include') + '.html';
+          $(this).load(file);
+        });
+      });
+    </script>
+    <link rel="stylesheet" href="../../vendor/normalize.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/syntax.css" />
+    <link rel="stylesheet" href="https://unpkg.com/tachyons@4/css/tachyons.min.css">
+    <title>
+      totaltrash.xyz
+      
+      – Turn On Compiler Warnings!
+      
+    </title>
+
+    <marquee direction="down" class="mw7" height="200" behavior="alternate" scrollamount="3">
+      <marquee behavior="alternate">
+          <big>totally revamped, still <strong style="color: red;">TOTAL</strong>ly <strong style="color: black;">TRASH</strong></big>
+      </marquee>
+    </marquee>
+
+  </head>
+  <body>
+    <main>
+      <article>
+        <h1>
+  Turn On Compiler Warnings!
+</h1>
+
+<nav>
+  <a href="../../">
+    <i class="fa fa-chevron-left" style="font-size:0.7em"></i>
+    Go back to index
+  </a>
+</nav>
+
+<div>
+  <div id="false_toc">
+    <h2>Contents</h2>
+  <ul>
+  <li><a href="#an-example-from-the-cnpy-library">An example from the <span><code>cnpy</code> library</span></a></li>
+  <li><a href="#runtime-error">Runtime error!</a></li>
+  <li><a href="#fixing-it">Fixing it</a></li>
+  </ul>
+  </div>
+<p>{% include toc %}</p>
+<p><em>This post originally appeared on <a href="https://dev-cafe.github.io/2017/06/04/turn-on-compiler-warnings/">DevCafe</a></em></p>
+<p>Compiler warnings can be a nuisance, clogging the output with unnecessarily verbose information. This is especially true of C++, even more so when the code uses template magic. However, turning them off can be rather harmful.</p>
+<p><strong>TL;DR</strong></p>
+<p>Set <code>-Wall -Wextra</code>, or equivalent, as your basic compiler flags, both in debug and in release mode. If you are using CMake, the <a href="http://autocmake.readthedocs.io/en/latest/">Autocmake project</a> does it <a href="https://github.com/coderefinery/autocmake/pull/203">by default</a></p>
+<h3 id="an-example-from-the-cnpy-library">An example from the <a href="https://github.com/robertodr/cnpy"><code>cnpy</code> library</a></h3>
+<p>Consider the following C++11 example, but it applies equally well to earlier standards. The <a href="https://github.com/robertodr/cnpy"><code>cnpy</code> library</a> for saving/loading C++ arrays to/from NumPy binary format has a basic data structure, called <code>NpyArray</code>. An object of this type is constructed by supplying:</p>
+<ul>
+<li>the shape of the array, i.e. a <code>std::vector&lt;size_t&gt;</code>. For example, a 2-dimensional array with dimensions 10 and 11 will have: <code>std::vector&lt;size_t&gt; shape({10, 11});</code></li>
+<li>the <em>word size</em> of the data type to be dumped to NumPy array. This is either read from the <code>.npy</code> when loading the array, or determined by the result of <code>sizeof(T)</code>, where <code>T</code> is the data type, when saving the array.</li>
+</ul>
+<p>The constructor will then compute how large a memory buffer is needed and allocate a <code>std::vector&lt;char&gt;</code>. The number of values in the array is computed from the shape array:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c++"><code class="sourceCode cpp"><a class="sourceLine" id="cb1-1" title="1"><span class="dt">size_t</span> nValues = <span class="dv">1</span>;</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="cf">for</span> (<span class="dt">size_t</span> i = <span class="dv">0</span>; i &lt; shape.size(); ++i)</a>
+<a class="sourceLine" id="cb1-3" title="3">  nValues *= shape[i];</a></code></pre></div>
+<p>or more compactly using <code>std::accumulate</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c++"><code class="sourceCode cpp"><a class="sourceLine" id="cb2-1" title="1">nValues = <span class="bu">std::</span>accumulate(shape.begin(), shape.end(),</a>
+<a class="sourceLine" id="cb2-2" title="2">                          <span class="dv">1</span>, <span class="bu">std::</span>multiplies&lt;<span class="dt">size_t</span>&gt;());</a></code></pre></div>
+<p>The type information is encoded in the <code>.npy</code> file format header. When loading the array the user will have to perform a <code>reinterpret_cast</code> to get the correct data type.</p>
+<h3 id="runtime-error">Runtime error!</h3>
+<p>Stripped to its barebones, the <code>NpyArray</code> class looks like this:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c++"><code class="sourceCode cpp"><a class="sourceLine" id="cb3-1" title="1"><span class="pp">#include </span><span class="im">&lt;algorithm&gt;</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="pp">#include </span><span class="im">&lt;cassert&gt;</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="pp">#include </span><span class="im">&lt;numeric&gt;</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></a>
+<a class="sourceLine" id="cb3-6" title="6"></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="kw">struct</span> VectorWtf</a>
+<a class="sourceLine" id="cb3-8" title="8">{</a>
+<a class="sourceLine" id="cb3-9" title="9">  VectorWtf(<span class="at">const</span> <span class="bu">std::</span>vector&lt;<span class="dt">size_t</span>&gt; &amp; s, <span class="dt">size_t</span> w) :</a>
+<a class="sourceLine" id="cb3-10" title="10">    <span class="va">nValues_</span>(<span class="bu">std::</span>accumulate(s.begin(),</a>
+<a class="sourceLine" id="cb3-11" title="11">                                 s.end(),</a>
+<a class="sourceLine" id="cb3-12" title="12">                                 <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb3-13" title="13">                                 <span class="bu">std::</span>multiplies&lt;<span class="dt">size_t</span>&gt;())),</a>
+<a class="sourceLine" id="cb3-14" title="14">    <span class="va">buffer_</span>(<span class="va">nValues_</span> * w, <span class="dt">char</span>(<span class="dv">0</span>)) {</a>
+<a class="sourceLine" id="cb3-15" title="15">      <span class="bu">std::</span>cout &lt;&lt; <span class="st">&quot;nValues_ &quot;</span> &lt;&lt; <span class="va">nValues_</span> &lt;&lt; <span class="bu">std::</span>endl;</a>
+<a class="sourceLine" id="cb3-16" title="16">      <span class="bu">std::</span>cout &lt;&lt; <span class="st">&quot;w &quot;</span> &lt;&lt; w &lt;&lt; <span class="bu">std::</span>endl;</a>
+<a class="sourceLine" id="cb3-17" title="17">      <span class="bu">std::</span>cout &lt;&lt; <span class="st">&quot;nValues_ * w &quot;</span> &lt;&lt; <span class="va">nValues_</span> * w &lt;&lt; <span class="bu">std::</span>endl;</a>
+<a class="sourceLine" id="cb3-18" title="18">      <span class="ot">assert</span>(<span class="va">buffer_</span>.size() == <span class="va">nValues_</span> * w);</a>
+<a class="sourceLine" id="cb3-19" title="19">      <span class="cf">for</span> (<span class="dt">size_t</span> i = <span class="dv">0</span>; i &lt; <span class="va">nValues_</span> * w; ++i) {</a>
+<a class="sourceLine" id="cb3-20" title="20">        <span class="bu">std::</span>cout &lt;&lt; <span class="va">buffer_</span>[i] &lt;&lt; <span class="bu">std::</span>endl;</a>
+<a class="sourceLine" id="cb3-21" title="21">      }</a>
+<a class="sourceLine" id="cb3-22" title="22">      <span class="bu">std::</span>cout &lt;&lt; <span class="st">&quot;buffer_.size() &quot;</span> &lt;&lt; <span class="va">buffer_</span>.size() &lt;&lt; <span class="bu">std::</span>endl;</a>
+<a class="sourceLine" id="cb3-23" title="23">  }</a>
+<a class="sourceLine" id="cb3-24" title="24"></a>
+<a class="sourceLine" id="cb3-25" title="25">  <span class="bu">std::</span>vector&lt;<span class="dt">char</span>&gt; <span class="va">buffer_</span>;</a>
+<a class="sourceLine" id="cb3-26" title="26">  <span class="dt">size_t</span> <span class="va">nValues_</span>;</a>
+<a class="sourceLine" id="cb3-27" title="27">};</a>
+<a class="sourceLine" id="cb3-28" title="28"></a>
+<a class="sourceLine" id="cb3-29" title="29"><span class="dt">int</span> main()</a>
+<a class="sourceLine" id="cb3-30" title="30">{</a>
+<a class="sourceLine" id="cb3-31" title="31">  <span class="bu">std::</span>vector&lt;<span class="dt">size_t</span>&gt; shape({<span class="dv">10</span>, <span class="dv">11</span>});</a>
+<a class="sourceLine" id="cb3-32" title="32">  <span class="dt">size_t</span> w = <span class="dv">16</span>;</a>
+<a class="sourceLine" id="cb3-33" title="33"></a>
+<a class="sourceLine" id="cb3-34" title="34">  VectorWtf(shape, w);</a>
+<a class="sourceLine" id="cb3-35" title="35"></a>
+<a class="sourceLine" id="cb3-36" title="36">  <span class="cf">return</span> <span class="dv">0</span>;</a>
+<a class="sourceLine" id="cb3-37" title="37">}</a></code></pre></div>
+<p>Let’s now try to compile it:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="ex">g++</span> -std=c++11 -O0 main.cpp <span class="kw">&amp;&amp;</span> <span class="ex">./a.out</span></a></code></pre></div>
+<p>The live example on <a href="http://coliru.stacked-crooked.com/a/bcf64023319e2f5e">Coliru</a> shows that we get a runtime error because the assertion in the constructor fails.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="ex">nValues_</span> 110</a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="fu">w</span> 16</a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="ex">nValues_</span> * w 1760</a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="ex">a.out</span>: main.cpp:18: VectorWtf::VectorWtf(const std::vector<span class="op">&lt;</span>long unsigned int<span class="op">&gt;</span><span class="kw">&amp;</span>, <span class="ex">size_t</span>)<span class="bu">:</span> Assertion <span class="kw">`</span><span class="ex">buffer_.size</span>() == <span class="ex">nValues_</span> * w<span class="st">' failed.</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="st">bash: line 7: 13432 Aborted                 (core dumped) ./a.out</span></a></code></pre></div>
+<p>What’s happening? Well, a very, very stupid mistake. <strong>The <code>buffer_</code> data member is initialized using the <code>nValues_</code> data member</strong> This shouldn’t be a problem, since it’s <strong>initialized first</strong> in the constructor, right? Wrong! <a href="http://open-std.org/JTC1/SC22/WG21/docs/papers/2016/n4594.pdf">According to the standard, 12.6.2 Section 13.3</a> data members are initialized in the order they were declared in the class. Thus <code>buffer_</code> gets initialized first, using an undefined value for <code>nValues_</code>.</p>
+<h3 id="fixing-it">Fixing it</h3>
+<p>The <strong>correct</strong> <code>struct</code> declaration is thus:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c++"><code class="sourceCode cpp"><a class="sourceLine" id="cb6-1" title="1"><span class="pp">#include </span><span class="im">&lt;algorithm&gt;</span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="pp">#include </span><span class="im">&lt;cassert&gt;</span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="pp">#include </span><span class="im">&lt;numeric&gt;</span></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></a>
+<a class="sourceLine" id="cb6-6" title="6"></a>
+<a class="sourceLine" id="cb6-7" title="7"><span class="kw">struct</span> VectorWtf</a>
+<a class="sourceLine" id="cb6-8" title="8">{</a>
+<a class="sourceLine" id="cb6-9" title="9">  VectorWtf(<span class="at">const</span> <span class="bu">std::</span>vector&lt;<span class="dt">size_t</span>&gt; &amp; s, <span class="dt">size_t</span> w) :</a>
+<a class="sourceLine" id="cb6-10" title="10">    <span class="va">nValues_</span>(<span class="bu">std::</span>accumulate(s.begin(),</a>
+<a class="sourceLine" id="cb6-11" title="11">                                 s.end(),</a>
+<a class="sourceLine" id="cb6-12" title="12">                                 <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb6-13" title="13">                                 <span class="bu">std::</span>multiplies&lt;<span class="dt">size_t</span>&gt;())),</a>
+<a class="sourceLine" id="cb6-14" title="14">    <span class="va">buffer_</span>(<span class="va">nValues_</span> * w, <span class="dt">char</span>(<span class="dv">0</span>)) {</a>
+<a class="sourceLine" id="cb6-15" title="15">      <span class="bu">std::</span>cout &lt;&lt; <span class="st">&quot;nValues_ &quot;</span> &lt;&lt; <span class="va">nValues_</span> &lt;&lt; <span class="bu">std::</span>endl;</a>
+<a class="sourceLine" id="cb6-16" title="16">      <span class="bu">std::</span>cout &lt;&lt; <span class="st">&quot;w &quot;</span> &lt;&lt; w &lt;&lt; <span class="bu">std::</span>endl;</a>
+<a class="sourceLine" id="cb6-17" title="17">      <span class="bu">std::</span>cout &lt;&lt; <span class="st">&quot;nValues_ * w &quot;</span> &lt;&lt; <span class="va">nValues_</span> * w &lt;&lt; <span class="bu">std::</span>endl;</a>
+<a class="sourceLine" id="cb6-18" title="18">      <span class="ot">assert</span>(<span class="va">buffer_</span>.size() == <span class="va">nValues_</span> * w);</a>
+<a class="sourceLine" id="cb6-19" title="19">      <span class="cf">for</span> (<span class="dt">size_t</span> i = <span class="dv">0</span>; i &lt; <span class="va">nValues_</span> * w; ++i) {</a>
+<a class="sourceLine" id="cb6-20" title="20">        <span class="bu">std::</span>cout &lt;&lt; <span class="va">buffer_</span>[i] &lt;&lt; <span class="bu">std::</span>endl;</a>
+<a class="sourceLine" id="cb6-21" title="21">      }</a>
+<a class="sourceLine" id="cb6-22" title="22">      <span class="bu">std::</span>cout &lt;&lt; <span class="st">&quot;buffer_.size() &quot;</span> &lt;&lt; <span class="va">buffer_</span>.size() &lt;&lt; <span class="bu">std::</span>endl;</a>
+<a class="sourceLine" id="cb6-23" title="23">  }</a>
+<a class="sourceLine" id="cb6-24" title="24"></a>
+<a class="sourceLine" id="cb6-25" title="25">  <span class="dt">size_t</span> <span class="va">nValues_</span>;</a>
+<a class="sourceLine" id="cb6-26" title="26">  <span class="bu">std::</span>vector&lt;<span class="dt">char</span>&gt; <span class="va">buffer_</span>;</a>
+<a class="sourceLine" id="cb6-27" title="27">};</a>
+<a class="sourceLine" id="cb6-28" title="28"></a>
+<a class="sourceLine" id="cb6-29" title="29"><span class="dt">int</span> main()</a>
+<a class="sourceLine" id="cb6-30" title="30">{</a>
+<a class="sourceLine" id="cb6-31" title="31">  <span class="bu">std::</span>vector&lt;<span class="dt">size_t</span>&gt; shape({<span class="dv">10</span>, <span class="dv">11</span>});</a>
+<a class="sourceLine" id="cb6-32" title="32">  <span class="dt">size_t</span> w = <span class="dv">16</span>;</a>
+<a class="sourceLine" id="cb6-33" title="33"></a>
+<a class="sourceLine" id="cb6-34" title="34">  VectorWtf(shape, w);</a>
+<a class="sourceLine" id="cb6-35" title="35"></a>
+<a class="sourceLine" id="cb6-36" title="36">  <span class="cf">return</span> <span class="dv">0</span>;</a>
+<a class="sourceLine" id="cb6-37" title="37">}</a></code></pre></div>
+<p>which also honors the tenet of ordering data members in your classes and structs by their size in memory. However, this is something very easily forgotten. How to avoid these kinds of errors?</p>
+<ol type="1">
+<li><strong>Do not initialize data members based on other data members</strong>. This is, in my opinion, overly restrictive.</li>
+<li><strong>Insert assertions in the constructors</strong>. Very useful, but assertions only work when <code>-DNDEBUG</code> is not given to the compiler. Most of the times this is not the case when compiling with optimization.</li>
+<li><strong>Turn on compiler warnings</strong>. <code>-Wall</code> catches this mistake and many others. For an extra layer of warnings, I also turn on <code>-Wextra</code>. This is the <a href="http://coliru.stacked-crooked.com/a/8eecbafde77f1d23">output on Coliru</a></li>
+</ol>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1"><span class="ex">main.cpp</span>: In constructor <span class="st">'VectorWtf::VectorWtf(const std::vector&lt;long unsigned int&gt;&amp;, size_t)'</span>:</a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="ex">main.cpp</span>:27:10: warning: <span class="st">'VectorWtf::nValues_'</span> will be initialized after [-Wreorder]</a>
+<a class="sourceLine" id="cb7-3" title="3">   <span class="ex">size_t</span> nValues_<span class="kw">;</span></a>
+<a class="sourceLine" id="cb7-4" title="4">          ^<span class="ex">~~~~~~~</span></a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="ex">main.cpp</span>:26:21: warning:   <span class="st">'std::vector&lt;char&gt; VectorWtf::buffer_'</span> [-Wreorder]</a>
+<a class="sourceLine" id="cb7-6" title="6">   <span class="ex">std</span>::vector<span class="op">&lt;</span>char<span class="op">&gt;</span> buffer_<span class="kw">;</span></a>
+<a class="sourceLine" id="cb7-7" title="7">                     ^<span class="ex">~~~~~~</span></a>
+<a class="sourceLine" id="cb7-8" title="8"><span class="ex">main.cpp</span>:9:3: warning:   when initialized here [-Wreorder]</a>
+<a class="sourceLine" id="cb7-9" title="9">   <span class="ex">VectorWtf</span>(const std::vector<span class="op">&lt;</span>size_t<span class="op">&gt;</span> <span class="kw">&amp;</span> <span class="ex">s</span>, size_t w) <span class="bu">:</span></a>
+<a class="sourceLine" id="cb7-10" title="10">   ^<span class="ex">~~~~~~~~</span></a></code></pre></div>
+</div>
+
+      </article>
+
+    <aside>
+      <h1>
+      Turn On Compiler Warnings!
+      </h1>
+
+      <div class="abstract">
+        
+      </div>
+
+      <nav id="toc">
+      </nav>
+
+      <hr />
+
+      <p>
+          <div align="left">
+              <i class="fas fa-video-slash"></i> <a href="../../movies.html">Movies</a>
+          </div>
+          <div align="right">
+              <i class="fas fa-volume-mute"></i> <a href="../../music.html">Music</a>
+          </div>
+      </p>
+      <p>
+          <div align="left">
+              <i class="fas fa-book-dead"></i> <a href="../../books.html">Books</a>
+          </div>
+          <div align="right">
+              <i class="fas fa-toilet-paper"></i> <a href="../../fragments.html">Fragments</a>
+          </div>
+      </p>
+
+      <hr />
+
+      <ul class="fa-ul">
+          <li><span class="fa-li"><i class="fas fa-crow"></i></span>
+              The source of this website is available on the Pijul Nest <a href="https://nest.pijul.com/robertodr/totaltrash.xyz">under the
+              terms of the AGPLv3</a>. Found a mistake? <a href="mailto:roberto.diremigio@gmail.com">Shoot an email</a>! (with
+              <a href="https://man.sr.ht/git.sr.ht/send-email.md">a patch</a>
+              maybe?)
+          </li>
+      </ul>
+    </aside>
+    <aside>
+     <img src="../../images/me-by-ilsignorm.png" width="300px">
+     <marquee direction="down" class="mw7" height="200" behavior="alternate" scrollamount="3">
+         <marquee behavior="alternate">
+             <big>UNDER CONSTRUCTION</big>
+         </marquee>
+     </marquee>
+    </aside>
+    </main>
+
+    <footer>
+      <p>
+        <i class="fas fa-crow"></i>
+        <a href="https://nest.pijul.com/robertodr/totaltrash.xyz:master/patches/7BiqQBA3AJmAayxdAzVXVTj11AHEHmXguNfAZdcTVr5MnombLdv9iMGzGMYM1DL2oq1jSzqoXAEob6HV6AWk8gEA.gz
+">
+          @7BiqQBA
+        </a>
+      </p>
+    </footer>
+
+    <script type="text/javascript">
+      // highlightjs
+     hljs.initHighlightingOnLoad();
+      hljs.initLineNumbersOnLoad({
+          singleLine: true
+      });
+
+      // add hint to remote links
+      window.onload =function() {
+        var links = document.links;
+        for (var i = 0, linksLength = links.length; i < linksLength; i++) {
+          if (links[i].hostname != window.location.hostname) {
+            links[i].innerHTML += ' <i class="fa fa-external-link-alt fa-sm" style="font-size:0.7em"></i>';
+          }
+        }
+      }
+
+      // deal with toc, the ugly way
+      var falseToc = document.getElementById('false_toc');
+
+      if (falseToc) {
+        document.getElementById('toc').innerHTML = falseToc.innerHTML;
+        falseToc.innerHTML = '';
+      }
+    </script>
+  </body>
+</html>

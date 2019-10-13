@@ -4,12 +4,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
     <meta name="referrer" content="no-referrer">
-    <link href="./favicon.png" rel="shortcut icon">
+    <link href="../../favicon.png" rel="shortcut icon">
     <link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Fira+Mono" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-    <script type="text/javascript" src="./vendor/highlight.pack.js"></script>
-    <script type="text/javascript" src="./vendor/highlight.line-numbers.js"></script>
+    <script type="text/javascript" src="../../vendor/highlight.pack.js"></script>
+    <script type="text/javascript" src="../../vendor/highlight.line-numbers.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML" async></script>
     <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js" integrity="sha384-0pzryjIRos8mFBWMzSSZApWtPl/5++eIfzYmTgBBmXYdhvxPc+XcFEk+zJwDgWbP" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
@@ -22,14 +22,14 @@
         });
       });
     </script>
-    <link rel="stylesheet" href="./vendor/normalize.css" />
-    <link rel="stylesheet" href="./css/style.css" />
-    <link rel="stylesheet" type="text/css" href="./css/syntax.css" />
+    <link rel="stylesheet" href="../../vendor/normalize.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/syntax.css" />
     <link rel="stylesheet" href="https://unpkg.com/tachyons@4/css/tachyons.min.css">
     <title>
       totaltrash.xyz
       
-      – <a href="./about.html">Roberto  <i class="fa fa-external-link-alt fa-sm" style="font-size:0.7em"></i></a>
+      – The \(n\)-th time is the charm
       
     </title>
 
@@ -43,143 +43,64 @@
   <body>
     <main>
       <article>
-        <h2>Here</h2>
+        <h1>
+  The \(n\)-th time is the charm
+</h1>
 
-<ul class="blog-list">
-  
-  
-  <li>
-    <span class="blog-date">
-      2019-10-06
-    </span>
-    <a href="./posts/blog/nix-rust-python.html">Nix, Rust, Python</a>
-  </li>
-  
-  
-  
-  <li>
-    <span class="blog-date">
-      2019-03-09
-    </span>
-    <a href="./posts/blog/plots-with-altair.html">Plots with Altair</a>
-  </li>
-  
-  
-  
-  <li>
-    <span class="blog-date">
-      2019-01-05
-    </span>
-    <a href="./posts/blog/the-n-th-time-is-the-charm.html">The \(n\)-th time is the charm</a>
-  </li>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  <li>
-    <span class="blog-date">
-      2017-07-11
-    </span>
-    <a href="./posts/blog/install-nixos.html">Installing NixOS</a>
-  </li>
-  
-  
-  
-  <li>
-    <span class="blog-date">
-      2017-07-08
-    </span>
-    <a href="./posts/blog/turn-on-compiler-warnings.html">Turn On Compiler Warnings!</a>
-  </li>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  <li>
-    <span class="blog-date">
-      2016-04-27
-    </span>
-    <a href="./posts/blog/welcome.html">Welcome</a>
-  </li>
-  
-  
+<nav>
+  <a href="../../">
+    <i class="fa fa-chevron-left" style="font-size:0.7em"></i>
+    Go back to index
+  </a>
+</nav>
+
+<div>
+  <div id="false_toc">
+    <h2>Contents</h2>
+  <ul>
+  <li><a href="#references">References</a></li>
+  </ul>
+  </div>
+<p>What do you know?</p>
+<p><span class="math display">\[ \ln x = \int_{-\infty}^x \frac 1 y \, dy  \]</span></p>
+<p>With plots:</p>
+<pre data-plot_target="my_figure.svg" data-plot_alt="This is a simple figure"><code>import matplotlib.pyplot as plt
+
+plt.figure()
+plt.plot([0,1,2,3,4], [1,2,3,4,5])
+plt.title('This is an example figure')</code></pre>
+<p>And references even!<span class="citation" data-cites="Thom2010-kh"><sup><a href="#ref-Thom2010-kh">1</a></sup></span></p>
+<p>TODOs:</p>
+<ul>
+<li>Read the Pijul SHA to generate the footer correctly. It is probably possible to adapt this: <a href="https://github.com/snoyberg/githash">githash</a></li>
+<li>Refurbish the template to include links to other platforms (Twitter <em>etc.</em>)</li>
+<li>Generate CV as PDF and HTML</li>
+<li>Clean up the Haskell source, also looking at <a href="https://github.com/LaurentRDC/personal-website/blob/master/src/site.hs">this</a> The code is discussed <a href="http://www.physics.mcgill.ca/~decotret/about.html#about-this-site">here</a> I want to be able to combine with other compilers without triple somersaults:
+<ul>
+<li><a href="https://github.com/owickstrom/pandoc-include-code">pandoc-include-code</a></li>
+<li><a href="https://github.com/LaurentRDC/pandoc-pyplot">pandoc-pyplot</a></li>
+</ul></li>
+<li>Try to create a <code>pandoc-bokeh</code> filter based on <code>pandoc-pyplot</code>.</li>
 </ul>
-
-<h2>And there</h2>
-
-<ul class="blog-list">
-  
-  
-  
-  
-  
-  
-  
-  
-  <li>
-    <span class="blog-date">
-      2018-09-14
-    </span>
-    <a href="https://dev-cafe.github.io/2018/09/14/getkw-01/">Redesigning Getkw _or_ reinventing the wheel: 0. State of affairs and requirements</a>
-  </li>
-  
-  
-  
-  <li>
-    <span class="blog-date">
-      2018-05-03
-    </span>
-    <a href="https://dev-cafe.github.io/2018/05/03/docker-images/">Docker Images for Fun and for Profit</a>
-  </li>
-  
-  
-  
-  
-  
-  
-  
-  <li>
-    <span class="blog-date">
-      2017-06-04
-    </span>
-    <a href="https://dev-cafe.github.io/2017/06/04/turn-on-compiler-warnings/">Turn On Compiler Warnings!</a>
-  </li>
-  
-  
-  
-  <li>
-    <span class="blog-date">
-      2017-03-01
-    </span>
-    <a href="https://dev-cafe.github.io/2017/03/01/branching-models/">Branching Models</a>
-  </li>
-  
-  
-  
-  
-</ul>
+<h3 id="references" class="unnumbered">References</h3>
+<div id="refs" class="references">
+<div id="ref-Thom2010-kh">
+<p>(1) Thom, A. J. W. Stochastic Coupled Cluster Theory. <em>Phys. Rev. Lett.</em> <strong>2010</strong>, <em>105</em> (26), 263004. <a href="https://doi.org/10.1103/PhysRevLett.105.263004">https://doi.org/10.1103/PhysRevLett.105.263004</a>.</p>
+</div>
+</div>
+</div>
 
       </article>
 
     <aside>
       <h1>
-      <a href="./about.html">Roberto  <i class="fa fa-external-link-alt fa-sm" style="font-size:0.7em"></i></a>
+      The \(n\)-th time is the charm
       </h1>
 
       <div class="abstract">
         
         <i class="fas fa-angle-double-right fa-3x fa-pull-left" aria-hidden="true"></i>
-        Writing stuff. Curabitur mauris ipsum, egestas in lacus eu, mollis volutpat quam. Etiam pellentesque ipsum sit amet leo egestas molestie. Proin ut eros in tortor consectetur vulputate at vitae mi. Maecenas sit amet aliquet urna. Sed semper fringilla orci ac dapibus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Curabitur rutrum dictum justo mollis lobortis. Etiam commodo consequat nisl nec aliquet. Mauris neque ante, tristique a consectetur ac, pretium et felis. Nunc cursus dignissim lorem, ac varius quam fermentum quis. Praesent at auctor ante.
+        Probably this is the time when I actually get my personal website off the ground.
         
       </div>
 
@@ -190,18 +111,18 @@
 
       <p>
           <div align="left">
-              <i class="fas fa-video-slash"></i> <a href="./movies.html">Movies</a>
+              <i class="fas fa-video-slash"></i> <a href="../../movies.html">Movies</a>
           </div>
           <div align="right">
-              <i class="fas fa-volume-mute"></i> <a href="./music.html">Music</a>
+              <i class="fas fa-volume-mute"></i> <a href="../../music.html">Music</a>
           </div>
       </p>
       <p>
           <div align="left">
-              <i class="fas fa-book-dead"></i> <a href="./books.html">Books</a>
+              <i class="fas fa-book-dead"></i> <a href="../../books.html">Books</a>
           </div>
           <div align="right">
-              <i class="fas fa-toilet-paper"></i> <a href="./fragments.html">Fragments</a>
+              <i class="fas fa-toilet-paper"></i> <a href="../../fragments.html">Fragments</a>
           </div>
       </p>
 
@@ -217,7 +138,7 @@
       </ul>
     </aside>
     <aside>
-     <img src="./images/me-by-ilsignorm.png" width="300px">
+     <img src="../../images/me-by-ilsignorm.png" width="300px">
      <marquee direction="down" class="mw7" height="200" behavior="alternate" scrollamount="3">
          <marquee behavior="alternate">
              <big>UNDER CONSTRUCTION</big>
