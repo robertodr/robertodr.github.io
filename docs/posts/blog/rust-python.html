@@ -94,9 +94,9 @@
 <h3 id="development-environment">Development environment</h3>
 <h4 id="rust-dependencies">Rust dependencies</h4>
 <p>These are for developers only. First and foremost, we need the Rust toolchain. <code>rustup</code> to the rescue!</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">curl</span> https://sh.rustup.rs -sSf <span class="kw">|</span> <span class="fu">sh</span> -s -- -y --no-modify-path --default-toolchain nightly</a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="bu">source</span> <span class="st">&quot;</span><span class="va">$HOME</span><span class="st">&quot;</span>/.cargo/env</a></code></pre></div>
-<p>Other dependencies will be specified in the <code>Cargo.toml</code> file and installed when we build the extension.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1">$ <span class="ex">curl</span> https://sh.rustup.rs -sSf <span class="kw">|</span> <span class="fu">sh</span> -s -- -y --no-modify-path --default-toolchain nightly</a>
+<a class="sourceLine" id="cb1-2" title="2">$ <span class="bu">source</span> <span class="st">&quot;</span><span class="va">$HOME</span><span class="st">&quot;</span>/.cargo/env</a></code></pre></div>
+<p>Other dependencies will be specified in the <code>Cargo.toml</code> file and installed when we build the extension. Note that we chose <code>nightly</code> as default Rust toolchain. As was mentioned, <a href="https://github.com/PyO3/pyo3">PyO3</a> is bleeding edge and uses features on the Rust language only available in nightly builds.</p>
 <h4 id="python-dependencies">Python dependencies</h4>
 <p>These are both for final users (<em>e.g.</em>, <a href="https://click.palletsprojects.com/en/7.x/">Click</a> for the command-line interface) and for developers (<em>e.g.</em>, <a href="https://docs.pytest.org/en/latest/">pytest</a> for testing). Preferably one should only install Python dependencies in virtual environments, <strong>never globally</strong>. I am partial towards <a href="https://pipenv.kennethreitz.org/en/latest/">Pipenv</a>, but <a href="https://docs.conda.io/en/latest/">Conda</a> could work as well.</p>
 <p>Running <code>pipenv install --dev</code> with the following <code>Pipfile</code>:</p>
@@ -127,16 +127,14 @@ click = &quot;&gt;=7.0&quot;</code></pre>
 </ol>
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1">$ <span class="ex">maturin</span> develop</a></code></pre></div>
 <p>The <code>Cargo.toml</code> lists the Rust dependencies of our project and these will be automatically downloaded and compiled if not already available.</p>
-<p><strong>And DONE!</strong> <a href="https://github.com/PyO3/maturin">maturin</a> will compile the module and link it into a dynamic shared object (DSO) alongside the Python code:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1">$ <span class="ex">tree</span> rustafarian</a>
-<a class="sourceLine" id="cb6-2" title="2"></a>
-<a class="sourceLine" id="cb6-3" title="3">  <span class="ex">rustafarian/</span></a>
-<a class="sourceLine" id="cb6-4" title="4">  ├── <span class="ex">cli.py</span></a>
-<a class="sourceLine" id="cb6-5" title="5">  ├── <span class="ex">__init__.py</span></a>
-<a class="sourceLine" id="cb6-6" title="6">  ├── <span class="ex">module</span></a>
-<a class="sourceLine" id="cb6-7" title="7">  │   ├── <span class="ex">double.py</span></a>
-<a class="sourceLine" id="cb6-8" title="8">  │   ├── <span class="ex">__init__.py</span></a>
-<a class="sourceLine" id="cb6-9" title="9">  └── <span class="ex">rustafarian.cpython-37m-x86_64-linux-gnu.so</span></a></code></pre></div>
+<p><strong>And DONE!</strong> <a href="https://github.com/PyO3/maturin">maturin</a> will compile the module and link it into a dynamic shared object (DSO) alongside the Python code resulting in the following directory tree:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="ex">rustafarian/</span></a>
+<a class="sourceLine" id="cb6-2" title="2">├── <span class="ex">cli.py</span></a>
+<a class="sourceLine" id="cb6-3" title="3">├── <span class="ex">__init__.py</span></a>
+<a class="sourceLine" id="cb6-4" title="4">├── <span class="ex">module</span></a>
+<a class="sourceLine" id="cb6-5" title="5">│   ├── <span class="ex">double.py</span></a>
+<a class="sourceLine" id="cb6-6" title="6">│   ├── <span class="ex">__init__.py</span></a>
+<a class="sourceLine" id="cb6-7" title="7">└── <span class="ex">rustafarian.cpython-37m-x86_64-linux-gnu.so</span></a></code></pre></div>
 <p>We can thus run tests with <code>pytest</code>:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1">$ <span class="ex">pytest</span> -x -rws -vv tests/test_*</a></code></pre></div>
 <p>or import <code>rustafarian</code> and use it in an interactive Python session spawned in our development environment.</p>
@@ -161,6 +159,7 @@ requires-python = &quot;&gt;=3.6&quot;
 requires-dist = [&quot;click&gt;=7.0&quot;]
 scripts = {rustafarian = &quot;rustafarian.cli:cli&quot;}
 classifier = [&quot;Programming Language :: Python&quot;]</code></pre>
+<p>Why is this so? <a href="https://github.com/PyO3/maturin">maturin</a> will generate the appropriate Python packaging information based on the contents of <code>Cargo.toml</code>, thus replacing any Python-related packaging tool or configuration file.</p>
 <h4 id="automated-deploy-to-pypi-with-travis-ci">Automated deploy to PyPI with Travis CI</h4>
 <p><a href="https://github.com/PyO3/maturin">maturin</a> has a <code>publish</code> CLI switch to upload a package to PyPI. The process can be automatised: whenever a new tag is pushed to GitHub, Travis will run a CI job. If successful, it will deploy the artifact to PyPI:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb11-1" title="1"><span class="fu">deploy:</span></a>

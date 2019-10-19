@@ -194,7 +194,7 @@ with import &quot;${src.out}/rust-overlay.nix&quot; pkgs pkgs;</code></pre>
 </dl>
 <h3 id="profit">Profit!</h3>
 <p>It is now time to allow <a href="https://direnv.net/">direnv</a> to do its thing:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="ex">direnv</span> allow</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1">$ <span class="ex">direnv</span> allow</a></code></pre></div>
 <p>this will take quite some time: <a href="https://nixos.org/nix/">Nix</a> will download and install dependencies and then call <a href="https://pipenv.kennethreitz.org/en/latest/">Pipenv</a> to set up the virtual environment. Since <a href="https://nixos.org/nix/">Nix</a> <em>is not</em> <a href="https://www.python.org/dev/peps/pep-0513/"><code>manylinux1</code></a>-compatible, the last step might require <em>compiling</em> some Python packages (<em>e.g.</em> <a href="https://pandas.pydata.org/">pandas</a>) from source. <strong>Sit tight!</strong></p>
 <p>When the environment set up is done, the development workflow will be unchanged. As a bonus, every time you jump into the project’s folder, all dependencies will be on <code>PATH</code>!</p>
 <h3 id="acknowledgments">Acknowledgments</h3>
